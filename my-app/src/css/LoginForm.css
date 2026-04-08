@@ -122,6 +122,17 @@ h2 {
   background: #d79921;
 }
 
-label {
+p,
+a,
+span {
+  text-decoration: none;
   font-family: var(--primary-font-family);
+}
+
+.error {
+  color: red;
+}
+
+.success {
+  color: green;
 }

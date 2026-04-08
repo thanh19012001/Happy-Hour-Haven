@@ -1,29 +1,41 @@
 import "../css/LoginForm.css";
+import useLoginForm from "./useLoginForm";
+
 function LoginForm() {
+  const {
+    formData,
+    errorMessage,
+    isError,
+    handleInputChange,
+    handleSubmit,
+    isLoading,
+  } = useLoginForm();
   return (
     <div>
       <div className="header">
         <h1>Happy Hour Heaven 🥂</h1>
         <h3>
           If drunk driving is illegal, then why are there parking lots near a
-          pub?{" "}
+          pub?
         </h3>
       </div>
       <div className="login-wrapper">
         <div className="login-form">
           <h2 className="login-text">LOG IN</h2>
-          <form>
+          <form onSubmit={handleSubmit}>
             <label htmlFor="username">
               <span>Username</span>
               <input
                 className="username-login-form"
                 id="username"
                 type="text"
-                name="Username"
+                name="username"
                 required
                 minLength="4"
                 maxLength="10"
                 placeholder="Enter Username Here"
+                onChange={handleInputChange}
+                value={formData.username}
               />
             </label>
 
@@ -33,14 +45,24 @@ function LoginForm() {
                 className="password-login-form"
                 id="password"
                 type="password"
-                name="Password"
+                name="password"
                 required
                 minLength="5"
                 placeholder="Enter Password Here"
+                onChange={handleInputChange}
+                value={formData.username}
               />
             </label>
+            <button disabled={isLoading} type="submit">
+              {isLoading ? "Logging in ..." : "Log in"}
+            </button>
+            <p>
+              Not registered yet? <a href="/register">Register here</a>
+            </p>
 
-            <button type="submit">Log in</button>
+            {errorMessage ?? (
+              <p className={isError ? "error" : "success"}>{errorMessage}</p>
+            )}
           </form>
         </div>
       </div>
