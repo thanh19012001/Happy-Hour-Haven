@@ -3,12 +3,14 @@ import useLoginForm from "./useLoginForm";
 
 function LoginForm() {
   const {
-    formData,
+    username,
+    setUsername,
+    password,
+    setPassword,
     errorMessage,
     isError,
-    handleInputChange,
-    handleSubmit,
     isLoading,
+    handleSubmit,
   } = useLoginForm();
   return (
     <div>
@@ -34,8 +36,8 @@ function LoginForm() {
                 minLength="4"
                 maxLength="10"
                 placeholder="Enter Username Here"
-                onChange={handleInputChange}
-                value={formData.username}
+                onChange={(e) => setUsername(e.target.value)}
+                value={username}
               />
             </label>
 
@@ -49,8 +51,8 @@ function LoginForm() {
                 required
                 minLength="5"
                 placeholder="Enter Password Here"
-                onChange={handleInputChange}
-                value={formData.username}
+                onChange={(e) => setPassword(e.target.value)}
+                value={password}
               />
             </label>
             <button disabled={isLoading} type="submit">
