@@ -1,14 +1,14 @@
 import { createFileRoute } from "@tanstack/react-router";
-import LoginForm from "../component/LoginForm";
+import SellerPage from "../../component/SellerPage";
 
-export const Route = createFileRoute("/")({
+export const Route = createFileRoute("/seller/$id")({
   component: RouteComponent,
 });
 
 function RouteComponent() {
   return (
     <div>
-      <LoginForm />
+      <SellerPage />
     </div>
   );
 }
