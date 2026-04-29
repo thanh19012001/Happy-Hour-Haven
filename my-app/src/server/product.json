@@ -1,0 +1,169 @@
+{
+  "products": [
+    {
+      "id": "1",
+      "sellerId": "1",
+      "seller_name": "Grand Cru Wine Estate",
+      "product_name": "Château Lafite Rothschild 2015",
+      "price": 1200,
+      "image_url": "https://picsum.photos/400?random=1",
+      "listing_date": "2023-10-15",
+      "description": "Rượu vang đỏ Bordeaux hạng nhất từ Pauillac, Pháp.",
+      "category": "gin"
+    },
+    {
+      "id": "2",
+      "sellerId": "2",
+      "seller_name": "Elite Spirits Co.",
+      "product_name": "Dom Pérignon Vintage 2010",
+      "price": 350,
+      "image_url": "https://picsum.photos/400?random=2",
+      "listing_date": "2023-10-12",
+      "description": "Champagne cao cấp với hương hoa trắng và bánh mì nướng.",
+      "category": "vodka"
+    },
+    {
+      "id": "3",
+      "sellerId": "3",
+      "seller_name": "The Whiskey Vault",
+      "product_name": "Macallan 18 Year Old Sherry Oak",
+      "price": 420,
+      "image_url": "https://picsum.photos/400?random=3",
+      "listing_date": "2023-10-18",
+      "description": "Whisky Scotland 18 năm với hương sherry đậm đà.",
+      "category": "whiskey"
+    },
+    {
+      "id": "4",
+      "sellerId": "4",
+      "seller_name": "Tuscany Direct",
+      "product_name": "Sassicaia 2018",
+      "price": 280,
+      "image_url": "https://picsum.photos/400?random=4",
+      "listing_date": "2023-10-05",
+      "description": "Rượu vang Ý từ Tuscany với hương quả mọng và gia vị.",
+      "category": "rum"
+    },
+    {
+      "id": "5",
+      "sellerId": "1",
+      "seller_name": "Grand Cru Wine Estate",
+      "product_name": "Opus One 2017",
+      "price": 380,
+      "image_url": "https://picsum.photos/400?random=5",
+      "listing_date": "2023-10-20",
+      "description": "Rượu vang California cao cấp phong cách Mỹ - Pháp.",
+      "category": "gin"
+    },
+    {
+      "id": "6",
+      "sellerId": "5",
+      "seller_name": "Asian Heritage Liquors",
+      "product_name": "Rượu Mao Đài 10 năm",
+      "price": 220,
+      "image_url": "https://picsum.photos/400?random=6",
+      "listing_date": "2023-10-08",
+      "description": "Rượu trắng Trung Quốc ủ 10 năm, hương mạnh và đặc trưng.",
+      "category": "vodka"
+    },
+    {
+      "id": "7",
+      "sellerId": "2",
+      "seller_name": "Elite Spirits Co.",
+      "product_name": "Penfolds Grange 2016",
+      "price": 650,
+      "image_url": "https://picsum.photos/400?random=7",
+      "listing_date": "2023-10-14",
+      "description": "Shiraz huyền thoại của Úc với cấu trúc mạnh mẽ.",
+      "category": "rum"
+    },
+    {
+      "id": "8",
+      "sellerId": "3",
+      "seller_name": "The Whiskey Vault",
+      "product_name": "Johnnie Walker Blue Label",
+      "price": 180,
+      "image_url": "https://picsum.photos/400?random=8",
+      "listing_date": "2023-10-16",
+      "description": "Blended whisky cao cấp với vị mượt và cân bằng.",
+      "category": "whiskey"
+    },
+    {
+      "id": "9",
+      "sellerId": "6",
+      "seller_name": "Vintage Collector's Club",
+      "product_name": "Château d'Yquem 2015",
+      "price": 520,
+      "image_url": "https://picsum.photos/400?random=9",
+      "listing_date": "2023-10-11",
+      "description": "Rượu vang ngọt Sauternes nổi tiếng với hương mật ong.",
+      "category": "gin"
+    },
+    {
+      "id": "10",
+      "sellerId": "4",
+      "seller_name": "Tuscany Direct",
+      "product_name": "Barolo Giacomo Conterno 2016",
+      "price": 310,
+      "image_url": "https://picsum.photos/400?random=10",
+      "listing_date": "2023-10-09",
+      "description": "Barolo Ý với hương hoa hồng, tannin mạnh và hậu vị dài.",
+      "category": "rum"
+    },
+    {
+      "id": "11",
+      "sellerId": "1",
+      "seller_name": "Grand Cru Wine Estate",
+      "product_name": "Sine Qua Non Syrah 2018",
+      "price": 750,
+      "image_url": "https://picsum.photos/400?random=11",
+      "listing_date": "2023-10-17",
+      "description": "Cult wine California sản xuất giới hạn, cực kỳ hiếm.",
+      "category": "vodka"
+    },
+    {
+      "id": "12",
+      "sellerId": "5",
+      "seller_name": "Asian Heritage Liquors",
+      "product_name": "Rượu Soju Jinro Chamisul",
+      "price": 15,
+      "image_url": "https://picsum.photos/400?random=12",
+      "listing_date": "2023-10-07",
+      "description": "Soju Hàn Quốc nhẹ, dễ uống và phổ biến.",
+      "category": "vodka"
+    },
+    {
+      "id": "13",
+      "sellerId": "6",
+      "seller_name": "Vintage Collector's Club",
+      "product_name": "Romanée-Conti 2017",
+      "price": 15000,
+      "image_url": "https://picsum.photos/400?random=13",
+      "listing_date": "2023-10-19",
+      "description": "Burgundy huyền thoại, một trong những chai đắt nhất thế giới.",
+      "category": "gin"
+    },
+    {
+      "id": "14",
+      "sellerId": "2",
+      "seller_name": "Elite Spirits Co.",
+      "product_name": "Vega Sicilia Unico 2010",
+      "price": 460,
+      "image_url": "https://picsum.photos/400?random=14",
+      "listing_date": "2023-10-13",
+      "description": "Rượu vang Tây Ban Nha ủ lâu năm, cực kỳ tinh tế.",
+      "category": "rum"
+    },
+    {
+      "id": "15",
+      "sellerId": "3",
+      "seller_name": "The Whiskey Vault",
+      "product_name": "Hennessy X.O",
+      "price": 200,
+      "image_url": "https://picsum.photos/400?random=15",
+      "listing_date": "2023-10-06",
+      "description": "Cognac Pháp cao cấp với hương gỗ và trái cây khô.",
+      "category": "whiskey"
+    }
+  ]
+}
