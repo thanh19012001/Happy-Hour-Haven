@@ -1,55 +1,61 @@
+import { useNavigate } from "@tanstack/react-router";
 import { useState } from "react";
+import { useQuery } from "@tanstack/react-query";
 
 export default function useLoginForm() {
   const [errorMessage, setErrorMessage] = useState(null);
-  const [isError, setIsError] = useState(null);
-  const [isLoading, setIsLoading] = useState(null);
-  const [formData, setFormData] = useState({
-    username: "",
-    password: "",
-  });
 
-  // function to test later when i have api better to let it function file later
-  // async function checkData(username, password) {
-  //   const res = await fetch();
-  //   const data = await res.json();
-  //   return data;
-  // }
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+
+  const URL = "http://localhost:3000/users"; // API change later
+  const navigate = useNavigate();
+
+  const fetchUsers = async () => {
+    const response = await fetch(URL);
+    if (!response.ok) {
+      throw new Error("fail to fetch users data");
+    }
+    return response.json();
+  };
+
+  const {
+    data: users = [],
+    isLoading,
+    isError,
+  } = useQuery({
+    queryKey: ["users"],
+    queryFn: fetchUsers,
+  });
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    setIsLoading(true);
-    const { username, password } = formData;
-    //check and return message
-    //   if (checkData(username, password)) {
-    //     return <div>Log in successful</div>;
-    //   } else {
-    //     return <div>Error</div>;
-    //   }
 
     if (!username || !password) {
-      setIsError(true);
       setErrorMessage("Check username and password again");
-    } else {
-      setIsError(false);
-      // storage in session if they can log in to
-      sessionStorage.setItem("isAuthenticated", "true");
-      setErrorMessage("Login successfully!!");
+      return;
     }
-    setIsLoading(false);
-  };
-  //handle update formData when user enter
-  const handleInputChange = (e) => {
-    const { name, value } = e.target;
-    setFormData((prev) => ({ ...prev, [name]: value }));
+
+    const foundUser = users.find(
+      (user) => user.username === username && user.password === password,
+    );
+
+    if (foundUser) {
+      localStorage.setItem("username", foundUser.username);
+      navigate({ to: "/home_page" });
+    } else {
+      setErrorMessage("Invalid username or password");
+    }
   };
 
   return {
-    formData,
+    username,
+    setUsername,
+    password,
+    setPassword,
     errorMessage,
-    isError,
     isLoading,
-    handleInputChange,
+    isError,
     handleSubmit,
   };
 }

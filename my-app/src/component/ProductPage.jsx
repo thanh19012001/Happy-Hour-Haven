@@ -1,7 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 import { Link, useNavigate, useParams } from "@tanstack/react-router";
 import { FaHeart, FaShoppingCart } from "react-icons/fa";
-import "../css/ProductPage.css";
+import "../css/HomePage.css";
 import { useCart } from "./CartContext";
 import { useFavorite } from "./FavoriteContext";
 

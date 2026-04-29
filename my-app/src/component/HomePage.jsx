@@ -1,10 +1,7 @@
-import React, { useState } from "react";
 import { Link, useNavigate } from "@tanstack/react-router";
-import { FaShoppingCart } from "react-icons/fa";
-import { FaUserCircle } from "react-icons/fa";
-import { FaHeart } from "react-icons/fa";
+import { useState } from "react";
+import { FaHeart, FaShoppingCart, FaUserCircle } from "react-icons/fa";
 import { LuContact } from "react-icons/lu";
-import "../css/HomePage.css";
 import { useQuery } from "@tanstack/react-query";
 import { useCart } from "./CartContext";
 import { useFavorite } from "./FavoriteContext";
@@ -18,6 +15,7 @@ const HomePage = () => {
   };
   const [sortOption, setSortOption] = useState("Default");
   const [searchValue, setSearchValue] = useState("");
+  const [categoryOption, setCategoryOption] = useState("All");
   const { handleAddToCart, totalItems } = useCart();
   const { handleAddToFavorite, totalFavorites } = useFavorite();
   const navigate = useNavigate();
@@ -33,6 +31,10 @@ const HomePage = () => {
     .filter((product) =>
       product.product_name.toLowerCase().includes(searchValue.toLowerCase()),
     )
+    .filter((product) => {
+      if (categoryOption === "All") return true;
+      return product.category === categoryOption;
+    })
     .sort((a, b) => {
       if (sortOption === "Price from high to low") {
         return b.price - a.price;
@@ -56,7 +58,7 @@ const HomePage = () => {
         <div className="nav-wrapper">
           <div className="account-wrapper">
             {" "}
-            <Link to="/$id/Account" className="account">
+            <Link to="/my_account_page" className="account">
               <FaUserCircle size={35} color="black" />
               My Account
             </Link>
@@ -80,7 +82,7 @@ const HomePage = () => {
             <div className="favorite-quantities">{totalFavorites}</div>
           </div>
           <div className="contact-wrapper">
-            <Link to="/$id/Contact" className="contact">
+            <Link to="/contact_page" className="contact">
               <LuContact size={30} color="grey" />
               Contact
             </Link>
@@ -118,6 +120,21 @@ const HomePage = () => {
                 />
               </label>
             </div>
+
+            <div className="category-option">
+              <label htmlFor="category">Filter </label>
+              <select
+                name="category"
+                onChange={(e) => setCategoryOption(e.target.value)}
+                value={categoryOption}
+              >
+                <option value="All">All</option>
+                <option value="gin">Gin</option>
+                <option value="vodka">Vodka</option>
+                <option value="rum">Rum</option>
+                <option value="whiskey">Whiskey</option>
+              </select>
+            </div>
           </div>
 
           <ul className="products-wrapper">
@@ -146,6 +163,7 @@ const HomePage = () => {
                   <p className="product-description">
                     {product.description.slice(0, 30)}...
                   </p>
+                  <p className="product-category">{product.category}</p>
                   <p className="listing-date">{product.listing_date}</p>
                   <p className="seller">{product.seller_name}</p>
                   <div className="product-actions">
