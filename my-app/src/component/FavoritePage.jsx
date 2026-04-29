@@ -1,11 +1,21 @@
-import { useCart } from "./CartContext";
-import { FaPlus } from "react-icons/fa";
-import { FaMinus } from "react-icons/fa";
+import { FaMinus, FaPlus } from "react-icons/fa";
 import { useFavorite } from "./FavoriteContext";
 const FavoritePage = () => {
   const { favoriteItems, handleAddToFavorite, handleRemoveFromFavorite } =
     useFavorite();
-  if (favoriteItems.length === 0) return <div>No item</div>;
+  if (favoriteItems.length === 0)
+    return (
+      <>
+        <div className="header">
+          <h1>Happy Hour Heaven 🥂</h1>
+          <h3>
+            If drunk driving is illegal, then why are there parking lots near a
+            pub?
+          </h3>
+        </div>
+        <div>No item</div>
+      </>
+    );
   return (
     <>
       <div className="header">
