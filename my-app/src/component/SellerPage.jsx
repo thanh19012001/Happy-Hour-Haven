@@ -1,5 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import { useParams } from "@tanstack/react-router";
+import { useContact } from "./ContactContext";
 
 const SellerPage = () => {
   const { id } = useParams({ from: `/seller/$id` });
@@ -10,6 +11,7 @@ const SellerPage = () => {
     return res.json();
   };
 
+  const { setContacts } = useContact();
   const {
     data: seller,
     isLoading,
@@ -38,6 +40,21 @@ const SellerPage = () => {
         <p className="seller_name">{seller.name}</p>
         <p className="seller_join_date">{seller.joined_date}</p>
         <p className="seller-product"></p>
+        <button
+          onClick={() =>
+            setContacts((prev) => [
+              ...prev,
+              {
+                name: seller.name,
+                phone: seller.contact.phone,
+                email: seller.contact.email,
+                image: seller.avatar,
+              },
+            ])
+          }
+        >
+          Save contact
+        </button>
       </div>
     </>
   );
