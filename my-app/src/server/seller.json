@@ -1,0 +1,70 @@
+{
+  "sellers": [
+    {
+      "id": "1",
+      "name": "Grand Cru Wine Estate",
+      "avatar": "https://randomuser.me/api/portraits/men/32.jpg",
+      "joined_date": "2022-06-10",
+      "contact": {
+        "email": "contact@grandcru.com",
+        "phone": "+64 21 123 4567",
+        "website": "https://grandcru.com"
+      }
+    },
+    {
+      "id": "2",
+      "name": "Elite Spirits Co.",
+      "avatar": "https://randomuser.me/api/portraits/men/45.jpg",
+      "joined_date": "2021-11-20",
+      "contact": {
+        "email": "support@elitespirits.com",
+        "phone": "+64 22 987 6543",
+        "website": "https://elitespirits.com"
+      }
+    },
+    {
+      "id": "3",
+      "name": "The Whiskey Vault",
+      "avatar": "https://randomuser.me/api/portraits/women/44.jpg",
+      "joined_date": "2023-01-05",
+      "contact": {
+        "email": "hello@whiskeyvault.com",
+        "phone": "+64 20 555 8888",
+        "website": "https://whiskeyvault.com"
+      }
+    },
+    {
+      "id": "4",
+      "name": "Tuscany Direct",
+      "avatar": "https://randomuser.me/api/portraits/men/55.jpg",
+      "joined_date": "2022-03-15",
+      "contact": {
+        "email": "info@tuscanydirect.com",
+        "phone": "+64 21 777 9999",
+        "website": "https://tuscanydirect.com"
+      }
+    },
+    {
+      "id": "5",
+      "name": "Asian Heritage Liquors",
+      "avatar": "https://randomuser.me/api/portraits/women/68.jpg",
+      "joined_date": "2023-02-10",
+      "contact": {
+        "email": "contact@asianheritage.com",
+        "phone": "+64 22 333 4444",
+        "website": "https://asianheritage.com"
+      }
+    },
+    {
+      "id": "6",
+      "name": "Vintage Collector's Club",
+      "avatar": "https://randomuser.me/api/portraits/men/12.jpg",
+      "joined_date": "2020-09-01",
+      "contact": {
+        "email": "support@vintageclub.com",
+        "phone": "+64 20 111 2222",
+        "website": "https://vintageclub.com"
+      }
+    }
+  ]
+}
