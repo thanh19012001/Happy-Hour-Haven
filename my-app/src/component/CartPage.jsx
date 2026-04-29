@@ -5,7 +5,19 @@ import { FaMinus } from "react-icons/fa";
 const CartPage = () => {
   const navigate = useNavigate();
   const { cartItems, handleAddToCart, handleRemoveFromCart } = useCart();
-  if (cartItems.length === 0) return <div>No item</div>;
+  if (cartItems.length === 0)
+    return (
+      <>
+        <div className="header">
+          <h1>Happy Hour Heaven 🥂</h1>
+          <h3>
+            If drunk driving is illegal, then why are there parking lots near a
+            pub?
+          </h3>
+        </div>
+        <div>No item</div>
+      </>
+    );
   return (
     <>
       <div className="header">
