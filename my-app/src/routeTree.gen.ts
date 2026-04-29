@@ -10,8 +10,11 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as RegisterRouteImport } from './routes/register'
+import { Route as PaymentRouteImport } from './routes/payment'
+import { Route as My_account_pageRouteImport } from './routes/my_account_page'
 import { Route as Home_pageRouteImport } from './routes/home_page'
 import { Route as Favorite_pageRouteImport } from './routes/favorite_page'
+import { Route as Contact_pageRouteImport } from './routes/contact_page'
 import { Route as Cart_pageRouteImport } from './routes/cart_page'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as SellerIdRouteImport } from './routes/seller/$id'
@@ -22,6 +25,16 @@ const RegisterRoute = RegisterRouteImport.update({
   path: '/register',
   getParentRoute: () => rootRouteImport,
 } as any)
+const PaymentRoute = PaymentRouteImport.update({
+  id: '/payment',
+  path: '/payment',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const My_account_pageRoute = My_account_pageRouteImport.update({
+  id: '/my_account_page',
+  path: '/my_account_page',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const Home_pageRoute = Home_pageRouteImport.update({
   id: '/home_page',
   path: '/home_page',
@@ -30,6 +43,11 @@ const Home_pageRoute = Home_pageRouteImport.update({
 const Favorite_pageRoute = Favorite_pageRouteImport.update({
   id: '/favorite_page',
   path: '/favorite_page',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const Contact_pageRoute = Contact_pageRouteImport.update({
+  id: '/contact_page',
+  path: '/contact_page',
   getParentRoute: () => rootRouteImport,
 } as any)
 const Cart_pageRoute = Cart_pageRouteImport.update({
@@ -56,8 +74,11 @@ const ProductIdRoute = ProductIdRouteImport.update({
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/cart_page': typeof Cart_pageRoute
+  '/contact_page': typeof Contact_pageRoute
   '/favorite_page': typeof Favorite_pageRoute
   '/home_page': typeof Home_pageRoute
+  '/my_account_page': typeof My_account_pageRoute
+  '/payment': typeof PaymentRoute
   '/register': typeof RegisterRoute
   '/product/$id': typeof ProductIdRoute
   '/seller/$id': typeof SellerIdRoute
@@ -65,8 +86,11 @@ export interface FileRoutesByFullPath {
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/cart_page': typeof Cart_pageRoute
+  '/contact_page': typeof Contact_pageRoute
   '/favorite_page': typeof Favorite_pageRoute
   '/home_page': typeof Home_pageRoute
+  '/my_account_page': typeof My_account_pageRoute
+  '/payment': typeof PaymentRoute
   '/register': typeof RegisterRoute
   '/product/$id': typeof ProductIdRoute
   '/seller/$id': typeof SellerIdRoute
@@ -75,8 +99,11 @@ export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/cart_page': typeof Cart_pageRoute
+  '/contact_page': typeof Contact_pageRoute
   '/favorite_page': typeof Favorite_pageRoute
   '/home_page': typeof Home_pageRoute
+  '/my_account_page': typeof My_account_pageRoute
+  '/payment': typeof PaymentRoute
   '/register': typeof RegisterRoute
   '/product/$id': typeof ProductIdRoute
   '/seller/$id': typeof SellerIdRoute
@@ -86,8 +113,11 @@ export interface FileRouteTypes {
   fullPaths:
     | '/'
     | '/cart_page'
+    | '/contact_page'
     | '/favorite_page'
     | '/home_page'
+    | '/my_account_page'
+    | '/payment'
     | '/register'
     | '/product/$id'
     | '/seller/$id'
@@ -95,8 +125,11 @@ export interface FileRouteTypes {
   to:
     | '/'
     | '/cart_page'
+    | '/contact_page'
     | '/favorite_page'
     | '/home_page'
+    | '/my_account_page'
+    | '/payment'
     | '/register'
     | '/product/$id'
     | '/seller/$id'
@@ -104,8 +137,11 @@ export interface FileRouteTypes {
     | '__root__'
     | '/'
     | '/cart_page'
+    | '/contact_page'
     | '/favorite_page'
     | '/home_page'
+    | '/my_account_page'
+    | '/payment'
     | '/register'
     | '/product/$id'
     | '/seller/$id'
@@ -114,8 +150,11 @@ export interface FileRouteTypes {
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   Cart_pageRoute: typeof Cart_pageRoute
+  Contact_pageRoute: typeof Contact_pageRoute
   Favorite_pageRoute: typeof Favorite_pageRoute
   Home_pageRoute: typeof Home_pageRoute
+  My_account_pageRoute: typeof My_account_pageRoute
+  PaymentRoute: typeof PaymentRoute
   RegisterRoute: typeof RegisterRoute
   ProductIdRoute: typeof ProductIdRoute
   SellerIdRoute: typeof SellerIdRoute
@@ -130,6 +169,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof RegisterRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/payment': {
+      id: '/payment'
+      path: '/payment'
+      fullPath: '/payment'
+      preLoaderRoute: typeof PaymentRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/my_account_page': {
+      id: '/my_account_page'
+      path: '/my_account_page'
+      fullPath: '/my_account_page'
+      preLoaderRoute: typeof My_account_pageRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/home_page': {
       id: '/home_page'
       path: '/home_page'
@@ -142,6 +195,13 @@ declare module '@tanstack/react-router' {
       path: '/favorite_page'
       fullPath: '/favorite_page'
       preLoaderRoute: typeof Favorite_pageRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/contact_page': {
+      id: '/contact_page'
+      path: '/contact_page'
+      fullPath: '/contact_page'
+      preLoaderRoute: typeof Contact_pageRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/cart_page': {
@@ -178,8 +238,11 @@ declare module '@tanstack/react-router' {
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   Cart_pageRoute: Cart_pageRoute,
+  Contact_pageRoute: Contact_pageRoute,
   Favorite_pageRoute: Favorite_pageRoute,
   Home_pageRoute: Home_pageRoute,
+  My_account_pageRoute: My_account_pageRoute,
+  PaymentRoute: PaymentRoute,
   RegisterRoute: RegisterRoute,
   ProductIdRoute: ProductIdRoute,
   SellerIdRoute: SellerIdRoute,
