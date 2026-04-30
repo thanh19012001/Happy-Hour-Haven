@@ -5,6 +5,7 @@ import { routeTree } from "./routeTree.gen";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { CartProvider } from "./component/CartContext";
 import { FavoriteProvider } from "./component/FavoriteContext";
+import { ContactProvider } from "./component/ContactContext";
 
 const router = createRouter({ routeTree });
 const queryClient = new QueryClient();
@@ -13,7 +14,9 @@ createRoot(document.getElementById("root")).render(
     <QueryClientProvider client={queryClient}>
       <CartProvider>
         <FavoriteProvider>
-          <RouterProvider router={router} />
+          <ContactProvider>
+            <RouterProvider router={router} />
+          </ContactProvider>
         </FavoriteProvider>
       </CartProvider>
     </QueryClientProvider>

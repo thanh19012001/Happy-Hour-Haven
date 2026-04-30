@@ -22,6 +22,7 @@ const HomePage = () => {
   const { data: products = [] } = useQuery({
     queryKey: ["products"],
     queryFn: fetchProducts,
+    staleTime: 5 * 60 * 1000,
   });
   const handleSortChange = (e) => {
     setSortOption(e.target.value);
