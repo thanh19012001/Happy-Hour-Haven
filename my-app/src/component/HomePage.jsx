@@ -123,7 +123,7 @@ const HomePage = () => {
             </div>
 
             <div className="category-option">
-              <label htmlFor="category">Filter </label>
+              <label htmlFor="category">Category </label>
               <select
                 name="category"
                 onChange={(e) => setCategoryOption(e.target.value)}
