@@ -1,7 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 import { Link, useNavigate, useParams } from "@tanstack/react-router";
 import { FaHeart, FaShoppingCart } from "react-icons/fa";
-import "../css/HomePage.css";
+import "../css/ProductPage.css";
 import { useCart } from "./CartContext";
 import { useFavorite } from "./FavoriteContext";
 
@@ -24,6 +24,7 @@ const ProductPage = () => {
   } = useQuery({
     queryKey: ["product", id],
     queryFn: fetchProducts,
+    staleTime: 5 * 60 * 1000,
   });
   if (isError) {
     return <div>Error: {error.message}</div>;
@@ -43,7 +44,7 @@ const ProductPage = () => {
               </h3>
               <div className="nav_wrapper">
                 <div className="shopping_cart_container">
-                  <Link to="/cart-page" className="shopping_cart">
+                  <Link to="/cart_page" className="shopping_cart">
                     {" "}
                     <button className="shopping_cart_button">
                       <FaShoppingCart size={35} color="blue" />
