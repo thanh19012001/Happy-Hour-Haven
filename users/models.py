@@ -5,8 +5,6 @@ from django.contrib.auth.models import AbstractUser
 
 class User(AbstractUser):
     hack_chat_tag = models.CharField(max_length = 255, null = True, blank = True)
-    
-     
 
 class UserInfo(models.Model):
     user = models.OneToOneField('User', on_delete = models.CASCADE) #come back and check this later if something goes wrong
