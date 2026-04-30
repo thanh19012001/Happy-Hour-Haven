@@ -129,9 +129,11 @@ span {
 }
 
 .error {
-  color: red;
+  background-color: red;
+  font-family: var(--primary-font-family);
 }
 
 .success {
-  color: green;
+  background-color: green;
+  font-family: var(--primary-font-family);
 }
