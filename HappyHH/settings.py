@@ -37,7 +37,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    #added work
+    #added 
     'rest_framework',
     'users',
     'products',
@@ -128,6 +128,7 @@ AUTH_USER_MODEL = 'users.User' ## add this anywhere since we're using AbstractUs
 from datetime import timedelta
 
 REST_FRAMEWORK = {
+    
     'DEFAULT_AUTHENTICATION_CLASSES': (
         'rest_framework_simplejwt.authentication.JWTAuthentication',
     ),
