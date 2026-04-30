@@ -20,6 +20,7 @@ const SellerPage = () => {
   } = useQuery({
     queryKey: ["seller", id],
     queryFn: fetchSellers,
+    staleTime: 5 * 60 * 1000,
   });
 
   if (isLoading) return <div>Loading...</div>;
