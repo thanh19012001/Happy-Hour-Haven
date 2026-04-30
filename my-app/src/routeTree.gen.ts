@@ -9,6 +9,7 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as Success_pageRouteImport } from './routes/success_page'
 import { Route as RegisterRouteImport } from './routes/register'
 import { Route as PaymentRouteImport } from './routes/payment'
 import { Route as My_account_pageRouteImport } from './routes/my_account_page'
@@ -16,10 +17,16 @@ import { Route as Home_pageRouteImport } from './routes/home_page'
 import { Route as Favorite_pageRouteImport } from './routes/favorite_page'
 import { Route as Contact_pageRouteImport } from './routes/contact_page'
 import { Route as Cart_pageRouteImport } from './routes/cart_page'
+import { Route as Cancel_pageRouteImport } from './routes/cancel_page'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as SellerIdRouteImport } from './routes/seller/$id'
 import { Route as ProductIdRouteImport } from './routes/product/$id'
 
+const Success_pageRoute = Success_pageRouteImport.update({
+  id: '/success_page',
+  path: '/success_page',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const RegisterRoute = RegisterRouteImport.update({
   id: '/register',
   path: '/register',
@@ -55,6 +62,11 @@ const Cart_pageRoute = Cart_pageRouteImport.update({
   path: '/cart_page',
   getParentRoute: () => rootRouteImport,
 } as any)
+const Cancel_pageRoute = Cancel_pageRouteImport.update({
+  id: '/cancel_page',
+  path: '/cancel_page',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
@@ -73,6 +85,7 @@ const ProductIdRoute = ProductIdRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/cancel_page': typeof Cancel_pageRoute
   '/cart_page': typeof Cart_pageRoute
   '/contact_page': typeof Contact_pageRoute
   '/favorite_page': typeof Favorite_pageRoute
@@ -80,11 +93,13 @@ export interface FileRoutesByFullPath {
   '/my_account_page': typeof My_account_pageRoute
   '/payment': typeof PaymentRoute
   '/register': typeof RegisterRoute
+  '/success_page': typeof Success_pageRoute
   '/product/$id': typeof ProductIdRoute
   '/seller/$id': typeof SellerIdRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/cancel_page': typeof Cancel_pageRoute
   '/cart_page': typeof Cart_pageRoute
   '/contact_page': typeof Contact_pageRoute
   '/favorite_page': typeof Favorite_pageRoute
@@ -92,12 +107,14 @@ export interface FileRoutesByTo {
   '/my_account_page': typeof My_account_pageRoute
   '/payment': typeof PaymentRoute
   '/register': typeof RegisterRoute
+  '/success_page': typeof Success_pageRoute
   '/product/$id': typeof ProductIdRoute
   '/seller/$id': typeof SellerIdRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/cancel_page': typeof Cancel_pageRoute
   '/cart_page': typeof Cart_pageRoute
   '/contact_page': typeof Contact_pageRoute
   '/favorite_page': typeof Favorite_pageRoute
@@ -105,6 +122,7 @@ export interface FileRoutesById {
   '/my_account_page': typeof My_account_pageRoute
   '/payment': typeof PaymentRoute
   '/register': typeof RegisterRoute
+  '/success_page': typeof Success_pageRoute
   '/product/$id': typeof ProductIdRoute
   '/seller/$id': typeof SellerIdRoute
 }
@@ -112,6 +130,7 @@ export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
+    | '/cancel_page'
     | '/cart_page'
     | '/contact_page'
     | '/favorite_page'
@@ -119,11 +138,13 @@ export interface FileRouteTypes {
     | '/my_account_page'
     | '/payment'
     | '/register'
+    | '/success_page'
     | '/product/$id'
     | '/seller/$id'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
+    | '/cancel_page'
     | '/cart_page'
     | '/contact_page'
     | '/favorite_page'
@@ -131,11 +152,13 @@ export interface FileRouteTypes {
     | '/my_account_page'
     | '/payment'
     | '/register'
+    | '/success_page'
     | '/product/$id'
     | '/seller/$id'
   id:
     | '__root__'
     | '/'
+    | '/cancel_page'
     | '/cart_page'
     | '/contact_page'
     | '/favorite_page'
@@ -143,12 +166,14 @@ export interface FileRouteTypes {
     | '/my_account_page'
     | '/payment'
     | '/register'
+    | '/success_page'
     | '/product/$id'
     | '/seller/$id'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  Cancel_pageRoute: typeof Cancel_pageRoute
   Cart_pageRoute: typeof Cart_pageRoute
   Contact_pageRoute: typeof Contact_pageRoute
   Favorite_pageRoute: typeof Favorite_pageRoute
@@ -156,12 +181,20 @@ export interface RootRouteChildren {
   My_account_pageRoute: typeof My_account_pageRoute
   PaymentRoute: typeof PaymentRoute
   RegisterRoute: typeof RegisterRoute
+  Success_pageRoute: typeof Success_pageRoute
   ProductIdRoute: typeof ProductIdRoute
   SellerIdRoute: typeof SellerIdRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/success_page': {
+      id: '/success_page'
+      path: '/success_page'
+      fullPath: '/success_page'
+      preLoaderRoute: typeof Success_pageRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/register': {
       id: '/register'
       path: '/register'
@@ -211,6 +244,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof Cart_pageRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/cancel_page': {
+      id: '/cancel_page'
+      path: '/cancel_page'
+      fullPath: '/cancel_page'
+      preLoaderRoute: typeof Cancel_pageRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/': {
       id: '/'
       path: '/'
@@ -237,6 +277,7 @@ declare module '@tanstack/react-router' {
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  Cancel_pageRoute: Cancel_pageRoute,
   Cart_pageRoute: Cart_pageRoute,
   Contact_pageRoute: Contact_pageRoute,
   Favorite_pageRoute: Favorite_pageRoute,
@@ -244,6 +285,7 @@ const rootRouteChildren: RootRouteChildren = {
   My_account_pageRoute: My_account_pageRoute,
   PaymentRoute: PaymentRoute,
   RegisterRoute: RegisterRoute,
+  Success_pageRoute: Success_pageRoute,
   ProductIdRoute: ProductIdRoute,
   SellerIdRoute: SellerIdRoute,
 }
