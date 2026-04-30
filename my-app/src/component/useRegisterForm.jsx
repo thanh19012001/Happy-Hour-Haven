@@ -27,6 +27,7 @@ export default function useRegisterForm() {
   } = useQuery({
     queryKey: ["users"],
     queryFn: fetchUsers,
+    staleTime: 5 * 60 * 1000,
   });
   const existingUser = users.some((user) => user.username === username);
 
