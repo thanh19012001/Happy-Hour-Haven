@@ -2,7 +2,7 @@ import React from "react";
 import { useQuery } from "@tanstack/react-query";
 
 const MyAccountPage = () => {
-  const URL = "http://localhost:3000/users";
+  const URL = "http://localhost:3000/users"; //api
 
   const fetchUsers = async () => {
     const response = await fetch(URL);
