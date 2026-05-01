@@ -18,5 +18,7 @@ cd Backend
 
 venv\Scripts\activate
 
+cd Backend/HHH
+
 python3 manage.py runserver 9000
 
