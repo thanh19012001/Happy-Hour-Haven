@@ -1,9 +1,21 @@
-import { createContext, useContext, useState } from "react";
+import { createContext, useContext, useEffect, useState } from "react";
 
 const CartContext = createContext();
 
 export const CartProvider = ({ children }) => {
-  const [cartItems, setCartItems] = useState([]);
+  const [cartItems, setCartItems] = useState(() => {
+    const savedCartItems = sessionStorage.getItem("cartItems");
+    return savedCartItems ? JSON.parse(savedCartItems) : [];
+  });
+
+  useEffect(() => {
+    sessionStorage.setItem("cartItems", JSON.stringify(cartItems));
+  }, [cartItems]);
+
+  const clearCart = () => {
+    setCartItems([]);
+    sessionStorage.removeItem("cartItems");
+  };
 
   const handleAddToCart = (product) => {
     setCartItems((prev) => {
@@ -25,27 +37,39 @@ export const CartProvider = ({ children }) => {
       const exists = prev.find((item) => item.id === product.id);
 
       if (exists) {
-        // nếu quantity = 1 thì xóa luôn khỏi cart
+        // quantity = 1 remove
         if (exists.quantity === 1) {
           return prev.filter((item) => item.id !== product.id);
         }
-        // nếu quantity > 1 thì -1
+        // quantity > 1 -> quantity-1
         return prev.map((item) =>
           item.id === product.id
             ? { ...item, quantity: item.quantity - 1 }
             : item,
         );
       }
-      return prev; // không tìm thấy thì giữ nguyên
+      return prev; // keep same items
     });
   };
 
   // total quantities (vd: 2 wines A + 3 wines B = 5)
   const totalItems = cartItems.reduce((sum, item) => sum + item.quantity, 0);
+  //total price
+  const totalCost = cartItems.reduce(
+    (total, item) => total + item.quantity * item.price,
+    0,
+  );
 
   return (
     <CartContext.Provider
-      value={{ cartItems, handleAddToCart, handleRemoveFromCart, totalItems }}
+      value={{
+        cartItems,
+        handleAddToCart,
+        handleRemoveFromCart,
+        totalItems,
+        totalCost,
+        clearCart,
+      }}
     >
       {children}
     </CartContext.Provider>
