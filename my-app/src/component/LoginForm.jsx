@@ -33,7 +33,7 @@ function LoginForm() {
                 type="text"
                 name="username"
                 required
-                minLength="4"
+                minLength="2"
                 maxLength="10"
                 placeholder="Enter Username Here"
                 onChange={(e) => setUsername(e.target.value)}
@@ -49,7 +49,7 @@ function LoginForm() {
                 type="password"
                 name="password"
                 required
-                minLength="5"
+                minLength="2"
                 placeholder="Enter Password Here"
                 onChange={(e) => setPassword(e.target.value)}
                 value={password}
