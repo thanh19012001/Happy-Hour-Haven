@@ -36,18 +36,18 @@ export const FavoriteProvider = ({ children }) => {
       const exists = prev.find((item) => item.id === product.id);
 
       if (exists) {
-        // nếu quantity = 1 thì xóa luôn khỏi cart
+        // quantity = 1 remove
         if (exists.quantity === 1) {
           return prev.filter((item) => item.id !== product.id);
         }
-        // nếu quantity > 1 thì -1
+        // quantity > 1 -> quantity -1
         return prev.map((item) =>
           item.id === product.id
             ? { ...item, quantity: item.quantity - 1 }
             : item,
         );
       }
-      return prev; // không tìm thấy thì giữ nguyên
+      return prev; // keep the rest
     });
   };
 
