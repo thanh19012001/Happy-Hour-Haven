@@ -19,9 +19,9 @@ app.post("/checkout-session", async (req, res) => {
       price_data: {
         currency: "NZD",
         product_data: {
-          name: item.product_name,
+          name: item.name,
           description: item.description || "No description available",
-          images: item.image_url ? [item.image_url] : [],
+          images: item.place_holder_image ? [item.place_holder_image] : [],
         },
         unit_amount: Math.round(item.price * 100), // Chuyển sang cents
       },
