@@ -1,8 +1,17 @@
-import React from "react";
+import { useQuery } from "@tanstack/react-query";
 import { useContact } from "./ContactContext";
 
 const ContactPage = () => {
   const { contacts } = useContact();
+
+  const { data: products = [] } = useQuery({
+    queryKey: ["products"],
+    queryFn: async () => {
+      const res = await fetch("http://127.0.0.1:9000/api/products/");
+      return res.json();
+    },
+    staleTime: 5 * 60 * 1000,
+  });
 
   return (
     <>
@@ -15,13 +24,21 @@ const ContactPage = () => {
       </div>
       <h2>Contact list</h2>
       <div className="contact-wrapper">
-        {contacts.map((contact, index) => (
-          <div className="contact-body" key={index}>
-            <br />
-            <p className="contact-name">{contact.name}</p>
-            <p className="contact-phone">{contact.phone}</p>
-            <p className="contact-email">{contact.email}</p>
-            <img src={contact.image} alt={contact.name} />
+        {contacts.map((contact) => (
+          <div className="contact-body" key={contact.id}>
+            <img src={contact.image} alt={contact.username} />
+            <p className="contact-name">{contact.username}</p>
+            <p className="contact-contact">{contact.contact}</p>
+            <div className="contact-activities">
+              <h2>Product List:</h2>
+              <ul>
+                {products
+                  .filter((p) => p.sellerId === contact.id)
+                  .map((product) => (
+                    <li key={product.id}>{product.name}</li>
+                  ))}
+              </ul>
+            </div>
           </div>
         ))}
       </div>
