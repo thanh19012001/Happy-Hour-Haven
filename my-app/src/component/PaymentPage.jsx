@@ -1,12 +1,24 @@
-import React from "react";
-import { FaPlus, FaMinus } from "react-icons/fa";
+import { FaMinus, FaPlus } from "react-icons/fa";
 import { useCart } from "./CartContext";
+import { useFavorite } from "./FavoriteContext";
+import { useContact } from "./ContactContext";
 
 function PaymentPage() {
   const { cartItems, handleAddToCart, handleRemoveFromCart } = useCart();
+  const { favoriteItems } = useFavorite;
+  const { contacts } = useContact();
 
   const handleCheckout = async () => {
     try {
+      // because stripe work based on session so we need to store session state before we pay by stripe
+      sessionStorage.setItem(
+        "preStripeState",
+        JSON.stringify({
+          favoriteItems,
+          contacts,
+        }),
+      );
+      // fetch stripe server
       const response = await fetch("http://localhost:8080/checkout-session", {
         method: "POST",
         headers: {
@@ -15,6 +27,7 @@ function PaymentPage() {
         body: JSON.stringify({ cartItems }),
       });
 
+      //check fetch error
       if (!response.ok) {
         const errorData = await response.json();
         throw new Error(errorData.error || "Failed to create checkout session");
@@ -23,7 +36,7 @@ function PaymentPage() {
       const { url } = await response.json();
 
       if (url) {
-        window.location.href = url; // Redirect trực tiếp đến Stripe
+        window.location.href = url; // Redirect to Stripe
       } else {
         throw new Error("No checkout URL received");
       }
@@ -33,7 +46,7 @@ function PaymentPage() {
     }
   };
 
-  // Tính tổng tiền
+  // calculate total money for items in cart
   const totalAmount = cartItems.reduce(
     (total, item) => total + item.price * item.quantity,
     0,
@@ -52,14 +65,14 @@ function PaymentPage() {
               <div key={item.id} className="cart-item">
                 <br />
                 <img
-                  src={item.image_url}
+                  src={item.place_holder_image}
                   alt={item.product_name}
-                  style={{ width: 300, height: 300, objectFit: "cover" }}
+                  style={{ width: 300, height: 300 }}
                 />
                 <div className="item-info">
                   <br />
                   <h2>{item.product_name}</h2>
-                  <p>Price: ${item.price.toFixed(2)} NZD</p>
+                  <p>Price: ${item.price} NZD</p>
                   <p>Seller: {item.seller_name}</p>
 
                   <div className="quantity-controls">
