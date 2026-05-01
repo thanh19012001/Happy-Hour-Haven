@@ -37,17 +37,17 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    #added 
-    'rest_framework',
-    'users',
-    'products',
-    'orders',
-    'corsheaders',
+    #added APPS 
+    'rest_framework', #needed this for building API
+    'users', #created app
+    'products', #created app
+    'orders', #created app
+    'corsheaders', #imported from package called django cors header, needed this for port stuff 
 ]
 
 
 MIDDLEWARE = [
-    'corsheaders.middleware.CorsMiddleware',
+    'corsheaders.middleware.CorsMiddleware', #MUST BE AT THE TOP in order to work with frontend 
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -58,7 +58,7 @@ MIDDLEWARE = [
 ]
 
 CORS_ALLOWED_ORIGINS = [
-    'http://localhost:5173',
+    'http://localhost:5173', #local port used by frontend dev Tien
 ]
 
 ROOT_URLCONF = 'HappyHH.urls'
@@ -133,6 +133,7 @@ AUTH_USER_MODEL = 'users.User' ## add this anywhere since we're using AbstractUs
 # newly added for authentication 
 from datetime import timedelta
 
+# Changing authentication to be used with JWT (Json Web Token)
 REST_FRAMEWORK = {
     
     'DEFAULT_AUTHENTICATION_CLASSES': (
@@ -140,7 +141,8 @@ REST_FRAMEWORK = {
     ),
 }
 
+# JWT config (Token lifespan)
 SIMPLE_JWT = {
-    'ACCESS_TOKEN_LIFETIME': timedelta(hours=1),
-    'AUTH_HEADER_TYPES': ('Bearer',),
+    'ACCESS_TOKEN_LIFETIME': timedelta(hours=1), #hours can be changed to more than 1 (user  need to refresh or log in again to get new token)
+    #'AUTH_HEADER_TYPES': ('Bearer',), can include or not depenednt if you wanna change the header, by default it uses Bearer
 }

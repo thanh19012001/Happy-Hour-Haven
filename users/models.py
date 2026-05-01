@@ -3,6 +3,7 @@ from django.contrib.auth.models import AbstractUser
 
 # Create your models here.
 
+#remember to check setting and configure our new user model to be used, we're not using the default User Model provided by django, we're using an abstractone then expanding it
 class User(AbstractUser):
     hack_chat_tag = models.CharField(max_length = 255, null = True, blank = True)
 
