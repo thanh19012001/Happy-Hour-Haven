@@ -1,35 +1,17 @@
 import { useNavigate } from "@tanstack/react-router";
 import { useState } from "react";
-import { useQuery } from "@tanstack/react-query";
 
 export default function useLoginForm() {
   const [errorMessage, setErrorMessage] = useState(null);
 
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const [isLoading, setIsLoading] = useState();
 
-  const URL = "http://localhost:3000/users"; // API change later
+  const URL = "http://127.0.0.1:9000/login/"; // API
   const navigate = useNavigate();
 
-  const fetchUsers = async () => {
-    const response = await fetch(URL);
-    if (!response.ok) {
-      throw new Error("fail to fetch users data");
-    }
-    return response.json();
-  };
-
-  const {
-    data: users = [],
-    isLoading,
-    isError,
-  } = useQuery({
-    queryKey: ["users"],
-    queryFn: fetchUsers,
-    staleTime: 5 * 60 * 1000,
-  });
-
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
     if (!username || !password) {
@@ -37,15 +19,33 @@ export default function useLoginForm() {
       return;
     }
 
-    const foundUser = users.find(
-      (user) => user.username === username && user.password === password,
-    );
+    try {
+      setIsLoading(true);
+      const res = await fetch(URL, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          username,
+          password,
+        }),
+      });
 
-    if (foundUser) {
-      localStorage.setItem("username", foundUser.username);
+      if (!res.ok) {
+        throw new Error("Failed to fetch data");
+      }
+
+      const data = await res.json();
+
+      localStorage.setItem("access", data.access);
+      localStorage.setItem("refresh", data.refresh);
       navigate({ to: "/home_page" });
-    } else {
+    } catch (error) {
+      console.error(error);
       setErrorMessage("Invalid username or password");
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -56,7 +56,6 @@ export default function useLoginForm() {
     setPassword,
     errorMessage,
     isLoading,
-    isError,
     handleSubmit,
   };
 }
