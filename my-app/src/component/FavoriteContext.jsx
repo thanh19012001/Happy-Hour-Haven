@@ -1,9 +1,19 @@
 import { createContext, useContext, useState } from "react";
+import { useEffect } from "react";
 
 const FavoriteContext = createContext();
 
 export const FavoriteProvider = ({ children }) => {
-  const [favoriteItems, setFavoriteItems] = useState([]);
+  // store information in session
+  const [favoriteItems, setFavoriteItems] = useState(() => {
+    const savedFavoriteItems = sessionStorage.getItem("favoriteItems");
+    return savedFavoriteItems ? JSON.parse(savedFavoriteItems) : [];
+  });
+
+  // automatic save if favoriteItems change
+  useEffect(() => {
+    sessionStorage.setItem("favoriteItems", JSON.stringify(favoriteItems));
+  }, [favoriteItems]);
 
   const handleAddToFavorite = (product) => {
     setFavoriteItems((prev) => {
