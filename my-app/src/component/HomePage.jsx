@@ -7,7 +7,7 @@ import { useCart } from "./CartContext";
 import { useFavorite } from "./FavoriteContext";
 
 const HomePage = () => {
-  const URL = "http://localhost:3001/products"; //change later when i have real API
+  const URL = "http://127.0.0.1:9000/api/products/"; // API
   const fetchProducts = async () => {
     const res = await fetch(URL);
     if (!res.ok) throw new Error("fail to fetch product");
@@ -30,11 +30,13 @@ const HomePage = () => {
 
   const displayProducts = products
     .filter((product) =>
-      product.product_name.toLowerCase().includes(searchValue.toLowerCase()),
+      product.name.toLowerCase().includes(searchValue.toLowerCase()),
     )
     .filter((product) => {
       if (categoryOption === "All") return true;
-      return product.category === categoryOption;
+      return (
+        product.category_name.toLowerCase() === categoryOption.toLowerCase()
+      );
     })
     .sort((a, b) => {
       if (sortOption === "Price from high to low") {
@@ -134,6 +136,7 @@ const HomePage = () => {
                 <option value="vodka">Vodka</option>
                 <option value="rum">Rum</option>
                 <option value="whiskey">Whiskey</option>
+                <option value="redwine">RedWine</option>
               </select>
             </div>
           </div>
@@ -145,7 +148,7 @@ const HomePage = () => {
                 key={product.id}
                 onDoubleClick={() =>
                   navigate({
-                    to: "/product/$id",
+                    to: "/products/$id",
                     params: { id: String(product.id) },
                   })
                 }
@@ -153,19 +156,19 @@ const HomePage = () => {
                 <div className="product-image-wrapper">
                   <img
                     className="image-url"
-                    src={product.image_url}
+                    src={product.place_holder_image}
                     alt={product.product_name}
                     style={{ width: 200, height: 200, objectFit: "cover" }}
                   />
                   <p className="product-price">{product.price} $NZ</p>
                 </div>
                 <div className="product-info">
-                  <p className="product-name">{product.product_name}</p>
+                  <p className="product-name">{product.name}</p>
                   <p className="product-description">
                     {product.description.slice(0, 30)}...
                   </p>
-                  <p className="product-category">{product.category}</p>
-                  <p className="listing-date">{product.listing_date}</p>
+                  <p className="product-category">{product.category_name}</p>
+                  <p className="listing-date">{product.date.slice(0, 10)}</p>
                   <p className="seller">{product.seller_name}</p>
                   <div className="product-actions">
                     <button onClick={() => handleAddToCart(product)}>
