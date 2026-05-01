@@ -6,8 +6,8 @@ import { useCart } from "./CartContext";
 import { useFavorite } from "./FavoriteContext";
 
 const ProductPage = () => {
-  const { id } = useParams({ from: "/product/$id" });
-  const URL = `http://localhost:3001/products/${id}`;
+  const { id } = useParams({ from: "/products/$id" });
+  const URL = `http://127.0.0.1:9000/api/products/${id}/`;
   const fetchProducts = async () => {
     const res = await fetch(URL);
     if (!res.ok) throw new Error("fail to fetch product");
@@ -65,7 +65,11 @@ const ProductPage = () => {
             </div>
             <div className="product-detail">
               <h2 className="product__name">{product.product_name}</h2>
-              <img src={product.image_url} alt={product.product_name} />
+              <img
+                src={product.place_holder_image}
+                alt={product.product_name}
+                style={{ width: 400, height: 400 }}
+              />
               <p className="product__price">{product.price} $NZ</p>
               <p className="product__description">{product.description}</p>
 
@@ -73,7 +77,7 @@ const ProductPage = () => {
                 className="seller "
                 onClick={() =>
                   navigate({
-                    to: "/seller/$id",
+                    to: "/sellers/$id",
                     params: { id: String(product.sellerId) },
                   })
                 }
