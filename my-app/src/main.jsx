@@ -9,6 +9,7 @@ import { ContactProvider } from "./component/ContactContext";
 
 const router = createRouter({ routeTree });
 const queryClient = new QueryClient();
+
 createRoot(document.getElementById("root")).render(
   <StrictMode>
     <QueryClientProvider client={queryClient}>
