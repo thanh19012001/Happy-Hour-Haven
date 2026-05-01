@@ -19,8 +19,8 @@ import { Route as Contact_pageRouteImport } from './routes/contact_page'
 import { Route as Cart_pageRouteImport } from './routes/cart_page'
 import { Route as Cancel_pageRouteImport } from './routes/cancel_page'
 import { Route as IndexRouteImport } from './routes/index'
-import { Route as SellerIdRouteImport } from './routes/seller/$id'
-import { Route as ProductIdRouteImport } from './routes/product/$id'
+import { Route as SellersIdRouteImport } from './routes/sellers/$id'
+import { Route as ProductsIdRouteImport } from './routes/products/$id'
 
 const Success_pageRoute = Success_pageRouteImport.update({
   id: '/success_page',
@@ -72,14 +72,14 @@ const IndexRoute = IndexRouteImport.update({
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
-const SellerIdRoute = SellerIdRouteImport.update({
-  id: '/seller/$id',
-  path: '/seller/$id',
+const SellersIdRoute = SellersIdRouteImport.update({
+  id: '/sellers/$id',
+  path: '/sellers/$id',
   getParentRoute: () => rootRouteImport,
 } as any)
-const ProductIdRoute = ProductIdRouteImport.update({
-  id: '/product/$id',
-  path: '/product/$id',
+const ProductsIdRoute = ProductsIdRouteImport.update({
+  id: '/products/$id',
+  path: '/products/$id',
   getParentRoute: () => rootRouteImport,
 } as any)
 
@@ -94,8 +94,8 @@ export interface FileRoutesByFullPath {
   '/payment': typeof PaymentRoute
   '/register': typeof RegisterRoute
   '/success_page': typeof Success_pageRoute
-  '/product/$id': typeof ProductIdRoute
-  '/seller/$id': typeof SellerIdRoute
+  '/products/$id': typeof ProductsIdRoute
+  '/sellers/$id': typeof SellersIdRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -108,8 +108,8 @@ export interface FileRoutesByTo {
   '/payment': typeof PaymentRoute
   '/register': typeof RegisterRoute
   '/success_page': typeof Success_pageRoute
-  '/product/$id': typeof ProductIdRoute
-  '/seller/$id': typeof SellerIdRoute
+  '/products/$id': typeof ProductsIdRoute
+  '/sellers/$id': typeof SellersIdRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -123,8 +123,8 @@ export interface FileRoutesById {
   '/payment': typeof PaymentRoute
   '/register': typeof RegisterRoute
   '/success_page': typeof Success_pageRoute
-  '/product/$id': typeof ProductIdRoute
-  '/seller/$id': typeof SellerIdRoute
+  '/products/$id': typeof ProductsIdRoute
+  '/sellers/$id': typeof SellersIdRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -139,8 +139,8 @@ export interface FileRouteTypes {
     | '/payment'
     | '/register'
     | '/success_page'
-    | '/product/$id'
-    | '/seller/$id'
+    | '/products/$id'
+    | '/sellers/$id'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -153,8 +153,8 @@ export interface FileRouteTypes {
     | '/payment'
     | '/register'
     | '/success_page'
-    | '/product/$id'
-    | '/seller/$id'
+    | '/products/$id'
+    | '/sellers/$id'
   id:
     | '__root__'
     | '/'
@@ -167,8 +167,8 @@ export interface FileRouteTypes {
     | '/payment'
     | '/register'
     | '/success_page'
-    | '/product/$id'
-    | '/seller/$id'
+    | '/products/$id'
+    | '/sellers/$id'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -182,8 +182,8 @@ export interface RootRouteChildren {
   PaymentRoute: typeof PaymentRoute
   RegisterRoute: typeof RegisterRoute
   Success_pageRoute: typeof Success_pageRoute
-  ProductIdRoute: typeof ProductIdRoute
-  SellerIdRoute: typeof SellerIdRoute
+  ProductsIdRoute: typeof ProductsIdRoute
+  SellersIdRoute: typeof SellersIdRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -258,18 +258,18 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/seller/$id': {
-      id: '/seller/$id'
-      path: '/seller/$id'
-      fullPath: '/seller/$id'
-      preLoaderRoute: typeof SellerIdRouteImport
+    '/sellers/$id': {
+      id: '/sellers/$id'
+      path: '/sellers/$id'
+      fullPath: '/sellers/$id'
+      preLoaderRoute: typeof SellersIdRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/product/$id': {
-      id: '/product/$id'
-      path: '/product/$id'
-      fullPath: '/product/$id'
-      preLoaderRoute: typeof ProductIdRouteImport
+    '/products/$id': {
+      id: '/products/$id'
+      path: '/products/$id'
+      fullPath: '/products/$id'
+      preLoaderRoute: typeof ProductsIdRouteImport
       parentRoute: typeof rootRouteImport
     }
   }
@@ -286,8 +286,8 @@ const rootRouteChildren: RootRouteChildren = {
   PaymentRoute: PaymentRoute,
   RegisterRoute: RegisterRoute,
   Success_pageRoute: Success_pageRoute,
-  ProductIdRoute: ProductIdRoute,
-  SellerIdRoute: SellerIdRoute,
+  ProductsIdRoute: ProductsIdRoute,
+  SellersIdRoute: SellersIdRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
