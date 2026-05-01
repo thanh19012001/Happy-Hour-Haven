@@ -1,0 +1,137 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+@font-face {
+  font-family: "3270NerdFontMono-Regular";
+  src: url("/Fonts/3270NerdFontMono-Regular.ttf") format("truetype");
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* create variable to reuse easier */
+:root {
+  /* Fonts */
+  --primary-font-family: "3270NerdFontMono-Regular", sans-serif;
+  --font-size-h1: 48px;
+  --font-size-normal: 10px;
+  /* Color */
+  --color: #fabd2f;
+  --bg-color: #32302f;
+  --color-2: #d79921;
+}
+
+h1,
+h3 {
+  color: var(--font-color);
+  font-family: var(--primary-font-family);
+  font-size: var(--font-size-h1);
+  text-align: center;
+  background: var(--color-2);
+}
+
+h3 {
+  font-size: var(--font-size-normal);
+  padding-right: 90px;
+}
+
+h2 {
+  font-size: 25px;
+  font-family: var(--primary-font-family);
+}
+.header {
+  margin-bottom: 20px;
+}
+.login-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 400px;
+  padding: 20px;
+}
+
+.login-form {
+  position: relative;
+  width: 420px;
+  border: 3px solid #000;
+  background: white;
+  padding: 35px 40px 40px;
+  box-shadow: 8px 8px 0 #000;
+}
+
+.login-text {
+  position: absolute;
+  top: -18px;
+  left: 30px;
+  background: white;
+  padding: 0 20px;
+  font-family: var(--primary-font-family);
+  font-size: 22px;
+  font-weight: bold;
+  border: 3px solid #000;
+  z-index: 2;
+}
+
+/* Form inputs */
+.login-form form {
+  display: flex;
+  flex-direction: column;
+  gap: 25px;
+  margin-top: 10px;
+}
+
+.login-form label {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  font-weight: bold;
+}
+
+.login-form input {
+  padding: 12px 15px;
+  font-size: 16px;
+  border: 2px solid #000;
+  font-family: var(--primary-font-family);
+}
+
+.username-login-form {
+  background: #fff;
+}
+
+.password-login-form {
+  background: #fff;
+  color: #000;
+}
+
+.login-form button {
+  margin-top: 15px;
+  padding: 14px;
+  font-size: 18px;
+  font-family: var(--primary-font-family);
+  background: #fabd2f;
+  border: 3px solid #000;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+.login-form button:hover {
+  background: #d79921;
+}
+
+p,
+a,
+span {
+  text-decoration: none;
+  font-family: var(--primary-font-family);
+}
+
+.error {
+  color: red;
+}
+
+.success {
+  color: green;
+}
