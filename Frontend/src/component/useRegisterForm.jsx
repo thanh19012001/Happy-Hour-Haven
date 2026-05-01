@@ -1,35 +1,15 @@
-import { useNavigate } from "@tanstack/react-router";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useState } from "react";
-import { useMutation, useQuery } from "@tanstack/react-query";
-import { useQueryClient, QueryClient } from "@tanstack/react-query";
 
 export default function useRegisterForm() {
-  const URL = "http://localhost:3000/users";
+  const URL = "http://127.0.0.1:9000/register/";
+
   const queryClient = useQueryClient();
-  const navigate = useNavigate();
 
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
-
-  const fetchUsers = async () => {
-    const response = await fetch(URL);
-    if (!response.ok) {
-      throw new Error("fail to fetch users data");
-    }
-    return response.json();
-  };
-
-  const {
-    data: users = [],
-    isLoading,
-    isError,
-    error,
-  } = useQuery({
-    queryKey: ["users"],
-    queryFn: fetchUsers,
-    staleTime: 5 * 60 * 1000,
-  });
-  const existingUser = users.some((user) => user.username === username);
+  const [errorMessage, setErrorMessage] = useState("");
+  const [isRegister, setIsRegister] = useState(false);
 
   const addUserMutation = useMutation({
     mutationFn: async (newUser) => {
@@ -38,28 +18,23 @@ export default function useRegisterForm() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(newUser),
       });
-
       if (!res.ok) throw new Error("fail to add new user");
       return res.json();
     },
-
     onSuccess: () => {
+      setIsRegister(true);
       queryClient.invalidateQueries({ queryKey: ["users"] });
-      navigate({ to: "/" });
+      window.location.href = "/";
+    },
+    onError: (error) => {
+      console.log(error);
+      setErrorMessage("Username already exists");
     },
   });
 
   const handleRegister = (e) => {
     e.preventDefault();
-    if (existingUser) {
-      alert("user already exist");
-      return;
-    }
-
-    addUserMutation.mutate({
-      username,
-      password,
-    });
+    addUserMutation.mutate({ username, password });
   };
 
   return {
@@ -68,8 +43,8 @@ export default function useRegisterForm() {
     password,
     setPassword,
     handleRegister,
-    isLoading,
-    isError,
-    error,
+    errorMessage,
+    isLoading: addUserMutation.isPending,
+    isRegister,
   };
 }

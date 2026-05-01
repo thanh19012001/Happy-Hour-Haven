@@ -11,6 +11,7 @@ function RegisterForm() {
     isLoading,
     isError,
     error,
+    isRegister,
   } = useRegisterForm();
   return (
     <div>
@@ -33,7 +34,7 @@ function RegisterForm() {
                 type="text"
                 name="username"
                 required
-                minLength="4"
+                minLength="1"
                 maxLength="10"
                 placeholder="Enter Username Here"
                 onChange={(e) => setUsername(e.target.value)}
@@ -49,7 +50,7 @@ function RegisterForm() {
                 type="password"
                 name="password"
                 required
-                minLength="5"
+                minLength="1"
                 placeholder="Enter Password Here"
                 onChange={(e) => setPassword(e.target.value)}
                 value={password}
@@ -60,6 +61,12 @@ function RegisterForm() {
             </button>
 
             {<p className={isError ? "error" : "success"}>{error?.Message}</p>}
+
+            {isRegister && (
+              <Link to="/">
+                <p>Back to Login</p>
+              </Link>
+            )}
           </form>
         </div>
       </div>
