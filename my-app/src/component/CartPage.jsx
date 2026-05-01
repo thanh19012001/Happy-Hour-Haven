@@ -32,7 +32,7 @@ const CartPage = () => {
         <h1 className="items_cart"></h1>
         {cartItems.map((item) => (
           <div key={item.id}>
-            <img src={item.image_url} alt={item.product_name} />
+            <img src={item.place_holder_image} alt={item.name} />
             <div className="button">
               <button onClick={() => handleAddToCart(item)}>
                 <FaPlus size={20} color="green" className="add-button" /> Add
@@ -45,10 +45,10 @@ const CartPage = () => {
                 <FaMinus size={20} color="red" /> Remove Item
               </button>
             </div>
-            <p className="item__price">{item.price}</p>
+            <p className="item__price">{item.price}$NZ</p>
             <p className="item_seller">{item.seller_name}</p>
-            <p className="item__quantities">{item.quantity}</p>
-            <p className="price">Total:{item.price * item.quantity}</p>
+            <p className="item__quantities">Quantity:{item.quantity}</p>
+            <p className="price">Total:{item.price * item.quantity}$NZ</p>
           </div>
         ))}
         <h2 className="total-price">
