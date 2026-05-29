@@ -26,3 +26,9 @@ class SellerSerializer(serializers.ModelSerializer):
     
     def get_avatar(self, obj):
         return f"https://i.pravatar.cc/150?u={obj.username}"
+    
+
+class MFALoginSerializer(serializers.Serializer):
+    username = serializers.CharField()
+    password = serializers.CharField(write_only=True)
+    code = serializers.CharField(required=False, allow_blank=True)

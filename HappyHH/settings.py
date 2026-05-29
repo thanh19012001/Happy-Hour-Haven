@@ -43,6 +43,8 @@ INSTALLED_APPS = [
     'products', #created app
     'orders', #created app
     'corsheaders', #imported from package called django cors header, needed this for port stuff 
+    'channels',  # chat-test
+    'chatting', # chat-test
 ]
 
 
@@ -145,4 +147,14 @@ REST_FRAMEWORK = {
 SIMPLE_JWT = {
     'ACCESS_TOKEN_LIFETIME': timedelta(hours=1), #hours can be changed to more than 1 (user  need to refresh or log in again to get new token)
     #'AUTH_HEADER_TYPES': ('Bearer',), can include or not depenednt if you wanna change the header, by default it uses Bearer
+}
+
+# Django Channels config
+ASGI_APPLICATION = 'HappyHH.asgi.application'
+
+# In-memory channel layer (no Redis needed for sprint)
+CHANNEL_LAYERS = {
+    "default": {
+        "BACKEND": "channels.layers.InMemoryChannelLayer"
+    }
 }

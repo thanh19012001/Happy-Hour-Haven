@@ -24,7 +24,9 @@ from rest_framework_simplejwt.views import TokenObtainPairView
 from rest_framework.routers import DefaultRouter
 from products.views import ProductViewSet, CategoryViewSet
 from orders.views import CartViewSet, Order_ProductViewSet
-from users.views import RegisterView, SellerViewSet
+from users.views import RegisterView, SellerViewSet, DeleteAccountView,  MFASetupView, MFAVerifyEnableView, MFALoginVerifyView, MFAEnforcedLoginView
+
+
 
 
 router = DefaultRouter()
@@ -38,5 +40,9 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/', include(router.urls)),
     path('register/', RegisterView.as_view()),
-    path('login/', TokenObtainPairView.as_view()),
+    path('login/', MFAEnforcedLoginView.as_view()),
+
+    path('mfa/setup/', MFASetupView.as_view()),
+    path('mfa/enable/', MFAVerifyEnableView.as_view()),
+    path('mfa/verify/', MFALoginVerifyView.as_view()),
 ]
