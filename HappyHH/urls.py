@@ -26,8 +26,8 @@ from products.views import ProductViewSet, CategoryViewSet
 from orders.views import CartViewSet, Order_ProductViewSet
 from users.views import RegisterView, SellerViewSet, DeleteAccountView,  MFASetupView, MFAVerifyEnableView, MFALoginVerifyView, MFAEnforcedLoginView
 
-
-
+from django.conf import settings
+from django.conf.urls.static import static
 
 router = DefaultRouter()
 router.register('products', ProductViewSet)
@@ -45,4 +45,7 @@ urlpatterns = [
     path('mfa/setup/', MFASetupView.as_view()),
     path('mfa/enable/', MFAVerifyEnableView.as_view()),
     path('mfa/verify/', MFALoginVerifyView.as_view()),
-]
+
+    path('delete-account/', DeleteAccountView.as_view())
+] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT) \
+  + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

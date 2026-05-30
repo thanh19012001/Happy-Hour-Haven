@@ -158,3 +158,13 @@ CHANNEL_LAYERS = {
         "BACKEND": "channels.layers.InMemoryChannelLayer"
     }
 }
+
+# package is used for path combination, since some of us are using mac/linux/window, we may have different ways to link path together 
+import os
+# Stores at HappyHourHaven/media 
+MEDIA_URL = '/media/'
+# Where frontend take the image to use, but in theory anyway. Use the api/product instead
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
+STATIC_URL = 'static/'
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
