@@ -25,9 +25,12 @@ from rest_framework.routers import DefaultRouter
 from products.views import ProductViewSet, CategoryViewSet
 from orders.views import CartViewSet, Order_ProductViewSet
 from users.views import RegisterView, SellerViewSet, DeleteAccountView,  MFASetupView, MFAVerifyEnableView, MFALoginVerifyView, MFAEnforcedLoginView
+from chatting.views import InitiateChatView
 
 from django.conf import settings
 from django.conf.urls.static import static
+
+
 
 router = DefaultRouter()
 router.register('products', ProductViewSet)
@@ -46,6 +49,8 @@ urlpatterns = [
     path('mfa/enable/', MFAVerifyEnableView.as_view()),
     path('mfa/verify/', MFALoginVerifyView.as_view()),
 
-    path('delete-account/', DeleteAccountView.as_view())
+    path('delete-account/', DeleteAccountView.as_view()),
+
+    path('chat/initiate/', InitiateChatView.as_view()),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT) \
   + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
