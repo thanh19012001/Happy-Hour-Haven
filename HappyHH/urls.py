@@ -24,7 +24,7 @@ from rest_framework_simplejwt.views import TokenObtainPairView
 from rest_framework.routers import DefaultRouter
 from products.views import ProductViewSet, CategoryViewSet
 from orders.views import CartViewSet, Order_ProductViewSet
-from users.views import RegisterView, SellerViewSet, DeleteAccountView,  MFASetupView, MFAVerifyEnableView, MFAEnforcedLoginView
+from users.views import RegisterView, SellerViewSet, DeleteAccountView,  MFASetupView, MFAVerifyEnableView, MFAEnforcedLoginView, UserProfileView 
 from chatting.views import InitiateChatView
 
 from django.conf import settings
@@ -43,16 +43,23 @@ urlpatterns = [
     path('api/', include(router.urls)),
     path('register/', RegisterView.as_view()),
 
+    path('user/me/', UserProfileView.as_view()),
+
+    # Setup MFA (generate QR code and the secret code)
+    path('mfa/setup/', MFASetupView.as_view()),
+    # Use the what generated to enable the MFA 
+    path('mfa/enable/', MFAVerifyEnableView.as_view()),
+
     # New login, this one uses MFA. If MFA is enabled, they must pass the MFA TOTP first.
     path('login/', MFAEnforcedLoginView.as_view()),
-
-    path('mfa/setup/', MFASetupView.as_view()),
-    path('mfa/enable/', MFAVerifyEnableView.as_view()),
-    
 
     #API for deleting account, please use this for account deletion
     path('delete-account/', DeleteAccountView.as_view()),
 
+    #check readme, this is too complicated
     path('chat/initiate/', InitiateChatView.as_view()),
+
+    # Since we're using Daphne we need to use this line of code to server static files and media. 
+    # If this was a normal server run we would've not need for this
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT) \
   + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

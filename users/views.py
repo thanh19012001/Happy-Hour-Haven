@@ -36,6 +36,43 @@ class SellerViewSet(viewsets.ReadOnlyModelViewSet):
     serializer_class = SellerSerializer
 
 
+class UserProfileView(APIView):
+    """Get and update the current user's profile"""
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request):
+        user = request.user
+        return Response({
+            "id": user.id,
+            "username": user.username,
+            "email": user.email,
+            "avatar": request.build_absolute_uri(user.avatar.url) if user.avatar else None,
+            "hack_chat_tag": user.hack_chat_tag,
+            "mfa_enabled": user.mfa_enabled,
+            "date_joined": user.date_joined.strftime("%d-%m-%Y")
+        })
+
+    def put(self, request):
+        user = request.user
+        
+        user.username = request.data.get("username", user.username)
+        user.email = request.data.get("email", user.email)
+        user.hack_chat_tag = request.data.get("hack_chat_tag", user.hack_chat_tag)
+        
+        if "avatar" in request.FILES:
+            user.avatar = request.FILES["avatar"]
+        
+        user.save()
+        
+        return Response({
+            "detail": "Profile updated successfully",
+            "username": user.username,
+            "email": user.email,
+            "hack_chat_tag": user.hack_chat_tag,
+            "avatar": request.build_absolute_uri(user.avatar.url) if user.avatar else None
+        })
+
+
 # --- MFA VIEWS ---
 
 class MFASetupView(APIView):
