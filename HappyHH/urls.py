@@ -22,7 +22,7 @@ from rest_framework_simplejwt.views import TokenObtainPairView
 
 #viewset and default router that will be used with viewset
 from rest_framework.routers import DefaultRouter
-from products.views import ProductViewSet, CategoryViewSet
+from products.views import ProductViewSet, CategoryViewSet, ReviewView
 from orders.views import CartViewSet, Order_ProductViewSet
 from users.views import RegisterView, SellerViewSet, DeleteAccountView,  MFASetupView, MFAVerifyEnableView, MFAEnforcedLoginView, UserProfileView 
 from chatting.views import InitiateChatView
@@ -58,6 +58,9 @@ urlpatterns = [
 
     #check readme, this is too complicated
     path('chat/initiate/', InitiateChatView.as_view()),
+
+    # add to urlpatterns:
+    path('products/<int:product_id>/reviews/', ReviewView.as_view()),
 
     # Since we're using Daphne we need to use this line of code to server static files and media. 
     # If this was a normal server run we would've not need for this

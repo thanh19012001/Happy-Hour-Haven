@@ -37,3 +37,16 @@ class Category(models.Model):
     #special method that return the string name based on the "TypeOfAlcohol" variable of the object
     def __str__(self):
         return self.TypeOfAlcohol
+
+class Review(models.Model):
+    user = models.ForeignKey('users.User', on_delete=models.CASCADE)
+    product = models.ForeignKey(Product, on_delete=models.CASCADE)
+    rating = models.IntegerField()
+    comment = models.CharField(max_length=255, blank=True, null=True)
+    date = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        unique_together = ('user', 'product')  # one review per user per product
+
+    def __str__(self):
+        return f"{self.user.username} → {self.product.name} ({self.rating}★)"
