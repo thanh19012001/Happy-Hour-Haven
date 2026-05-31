@@ -9,13 +9,17 @@ from django.contrib.auth import get_user_model
 User = get_user_model()
 
 class InitiateChatView(APIView):
-    """Buyer initiates chat with seller — generates a unique room per buyer-seller pair"""
+    # Buyer initiates chat with seller — generates a unique room per buyer-seller pair
+    
+    # Only logged in user can use this
     permission_classes = [IsAuthenticated]
 
+    # buyer sends a post request to get the seller ID, it will be used to make a unique room 
     def post(self, request):
+        # returns a number 
         seller_id = request.data.get("seller_id")
 
-        # Get the seller
+        # Get the seller (as in the object of this seller from the DB)
         try:
             seller = User.objects.get(id=seller_id)
         except User.DoesNotExist:
@@ -28,6 +32,7 @@ class InitiateChatView(APIView):
         room_id = f"chat_{buyer.id}_{seller_id}"
 
         # Build the room link
+        # May switch this to some other port depending on who host this.
         room_link = f"ws://localhost:9000/ws/chat/{room_id}/"
 
         return Response({
