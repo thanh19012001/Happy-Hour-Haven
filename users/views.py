@@ -75,27 +75,7 @@ class MFAVerifyEnableView(APIView):
             user.save()
             return Response({"detail": "MFA enabled successfully"})
         else:
-            return Response({"error": "Invalid code"}, status=status.HTTP_400_BAD_REQUEST)
-
-
-class MFALoginVerifyView(APIView):
-    # Step 3: After normal JWT login, if MFA is on, verify the code before granting access
-    permission_classes = [IsAuthenticated]
-
-    def post(self, request):
-        user = request.user
-        code = request.data.get("code")
-
-        if not user.mfa_enabled:
-            return Response({"detail": "MFA not enabled for this account"})
-
-        totp = pyotp.TOTP(user.totp_secret)
-
-        if totp.verify(code):
-            return Response({"detail": "MFA verified, access granted"})
-        else:
-            return Response({"error": "Invalid code"}, status=status.HTTP_400_BAD_REQUEST)
-        
+            return Response({"error": "Invalid code"}, status=status.HTTP_400_BAD_REQUEST)        
 
 
 class MFAEnforcedLoginView(APIView):

@@ -24,12 +24,11 @@ from rest_framework_simplejwt.views import TokenObtainPairView
 from rest_framework.routers import DefaultRouter
 from products.views import ProductViewSet, CategoryViewSet
 from orders.views import CartViewSet, Order_ProductViewSet
-from users.views import RegisterView, SellerViewSet, DeleteAccountView,  MFASetupView, MFAVerifyEnableView, MFALoginVerifyView, MFAEnforcedLoginView
+from users.views import RegisterView, SellerViewSet, DeleteAccountView,  MFASetupView, MFAVerifyEnableView, MFAEnforcedLoginView
 from chatting.views import InitiateChatView
 
 from django.conf import settings
 from django.conf.urls.static import static
-
 
 
 router = DefaultRouter()
@@ -43,12 +42,15 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/', include(router.urls)),
     path('register/', RegisterView.as_view()),
+
+    # New login, this one uses MFA. If MFA is enabled, they must pass the MFA TOTP first.
     path('login/', MFAEnforcedLoginView.as_view()),
 
     path('mfa/setup/', MFASetupView.as_view()),
     path('mfa/enable/', MFAVerifyEnableView.as_view()),
-    path('mfa/verify/', MFALoginVerifyView.as_view()),
+    
 
+    #API for deleting account, please use this for account deletion
     path('delete-account/', DeleteAccountView.as_view()),
 
     path('chat/initiate/', InitiateChatView.as_view()),
