@@ -59,7 +59,7 @@ npm run dev
 ```bash
 cd Backend
 pip install -r requirements.txt
-python manage.py runserver 9000
+daphne -p 9000 HappyHH.asgi:application
 ```
 
 ### Stripe server
