@@ -48,16 +48,6 @@ class ReviewView(APIView):
         except Product.DoesNotExist:
             return Response({"error": "Product not found"}, status=status.HTTP_404_NOT_FOUND)
 
-        # Check if user has bought this product
-        has_bought = Order_Product.objects.filter(
-            product=product,
-            order__user=user,
-            order__status="paid"
-        ).exists()
-
-        if not has_bought:
-            return Response({"error": "You can only review products you have purchased"}, status=status.HTTP_403_FORBIDDEN)
-
         # Check if already reviewed
         if Review.objects.filter(user=user, product=product).exists():
             return Response({"error": "You have already reviewed this product"}, status=status.HTTP_400_BAD_REQUEST)
