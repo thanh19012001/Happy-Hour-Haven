@@ -1,18 +1,154 @@
 from django.shortcuts import render
+from .serializers import RegisterSerializer, SellerSerializer, MFALoginSerializer
+from django.contrib.auth import get_user_model, logout
 
-from rest_framework import generics
-from .serializers import RegisterSerializer, SellerSerializer
-from rest_framework import viewsets
-from django.contrib.auth import get_user_model
+from rest_framework import viewsets, generics
+from rest_framework.views import APIView
+from rest_framework.permissions import IsAuthenticated
+from rest_framework.response import Response
+from rest_framework import status
 
+from rest_framework_simplejwt.views import TokenObtainPairView
+from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
+
+import pyotp
 
 User = get_user_model()
 
-# Using viewset for crud operation (from django rest framework)
+
 class RegisterView(generics.CreateAPIView):
     queryset = User.objects.all()
     serializer_class = RegisterSerializer
 
+
+class DeleteAccountView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def delete(self, request):
+        user = request.user
+        logout(request)
+        user.delete()
+        return Response({"detail": "Account deleted successfully"})
+
+
 class SellerViewSet(viewsets.ReadOnlyModelViewSet):
     queryset = User.objects.all()
     serializer_class = SellerSerializer
+
+
+class UserProfileView(APIView):
+    """Get and update the current user's profile"""
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request):
+        user = request.user
+        return Response({
+            "id": user.id,
+            "username": user.username,
+            "email": user.email,
+            "avatar": request.build_absolute_uri(user.avatar.url) if user.avatar else None,
+            "hack_chat_tag": user.hack_chat_tag,
+            "mfa_enabled": user.mfa_enabled,
+            "date_joined": user.date_joined.strftime("%d-%m-%Y")
+        })
+
+    def put(self, request):
+        user = request.user
+        
+        user.username = request.data.get("username", user.username)
+        user.email = request.data.get("email", user.email)
+        user.hack_chat_tag = request.data.get("hack_chat_tag", user.hack_chat_tag)
+        
+        if "avatar" in request.FILES:
+            user.avatar = request.FILES["avatar"]
+        
+        user.save()
+        
+        return Response({
+            "detail": "Profile updated successfully",
+            "username": user.username,
+            "email": user.email,
+            "hack_chat_tag": user.hack_chat_tag,
+            "avatar": request.build_absolute_uri(user.avatar.url) if user.avatar else None
+        })
+
+
+# --- MFA VIEWS ---
+
+class MFASetupView(APIView):
+    # Step 1: Generate a secret and return a QR code URL for the user to scan 
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request):
+        user = request.user
+        if not user.totp_secret:
+            user.totp_secret = pyotp.random_base32()
+            user.save()
+        
+        totp = pyotp.TOTP(user.totp_secret)
+        uri = totp.provisioning_uri(name=user.username, issuer_name="HappyHourHaven")
+        
+        return Response({
+            "secret": user.totp_secret,
+            "uri": uri  # frontend feeds this into a QR code library
+        })
+
+
+class MFAVerifyEnableView(APIView):
+    # Step 2: User scans QR, types in the 6-digit code, we verify and enable MFA
+    permission_classes = [IsAuthenticated]
+
+    def post(self, request):
+        user = request.user
+        code = request.data.get("code")
+
+        if not user.totp_secret:
+            return Response({"error": "MFA setup not started"}, status=status.HTTP_400_BAD_REQUEST)
+
+        totp = pyotp.TOTP(user.totp_secret)
+
+        if totp.verify(code):
+            user.mfa_enabled = True
+            user.save()
+            return Response({"detail": "MFA enabled successfully"})
+        else:
+            return Response({"error": "Invalid code"}, status=status.HTTP_400_BAD_REQUEST)        
+
+
+class MFAEnforcedLoginView(APIView):
+    authentication_classes = []
+    permission_classes = []
+    serializer_class = MFALoginSerializer
+
+    def post(self, request):
+        serializer = MFALoginSerializer(data=request.data)
+        
+        if not serializer.is_valid():
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+        # Step 1: validate username and password
+        token_serializer = TokenObtainPairSerializer(data=request.data)
+        
+        try:
+            token_serializer.is_valid(raise_exception=True)
+        except Exception:
+            return Response({"error": "Invalid username or password"}, status=status.HTTP_401_UNAUTHORIZED)
+
+        user = token_serializer.user
+
+        # Step 2: if MFA enabled, check code
+        if user.mfa_enabled:
+            code = serializer.validated_data.get("code")
+
+            if not code:
+                return Response({
+                    "mfa_required": True,
+                    "detail": "Please provide your MFA code"
+                }, status=status.HTTP_403_FORBIDDEN)
+
+            totp = pyotp.TOTP(user.totp_secret)
+            if not totp.verify(code):
+                return Response({"error": "Invalid MFA code"}, status=status.HTTP_401_UNAUTHORIZED)
+
+        # Step 3: return token
+        return Response(token_serializer.validated_data)

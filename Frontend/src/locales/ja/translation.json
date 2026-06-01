@@ -88,5 +88,7 @@
   "paymentSuccessful": "お支払いが完了しました！🎉",
   "invoiceDownloaded": "請求書が自動的にダウンロードされました。",
   "cartCleared": "カートが正常にクリアされました。",
-  "continueShopping": "買い物を続ける"
+  "continueShopping": "買い物を続ける",
+  "contactList": "連絡先一覧",
+  "productList": "商品一覧:"
 }

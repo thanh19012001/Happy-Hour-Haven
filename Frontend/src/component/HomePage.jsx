@@ -1,12 +1,59 @@
 import { Link, useNavigate } from "@tanstack/react-router";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { FaHeart, FaShoppingCart, FaUserCircle } from "react-icons/fa";
 import { LuContact } from "react-icons/lu";
 import { useQuery } from "@tanstack/react-query";
 import { useCart } from "./CartContext";
 import { useFavorite } from "./FavoriteContext";
-
+import { useTranslation, Trans } from "react-i18next";
+import LanguageSwitcher from "./LanguageSwitcher";
+import { useCurrency } from "./CurrencyContext";
+import Chatbot from "./Chatbot";
+import LogoutButton from "./LogoutButton";
+import { useAvatar } from "./AvatarContext";
+import ThemeToggle from "./ThemeToggle";
 const HomePage = () => {
+  const { avatar, setAvatar } = useAvatar();
+  //add logic theme and state
+  const [isDark, setIsDark] = useState(true);
+  useEffect(() => {
+    const mq = window.matchMedia("(prefers-color-scheme: dark)");
+    setIsDark(mq.matches);
+    document.body.className = mq.matches ? "dark" : "light";
+  }, []);
+
+  function toggleTheme() {
+    setIsDark((prev) => {
+      const next = !prev;
+      document.body.className = next ? "dark" : "light";
+      return next;
+    });
+  }
+  const handleLogout = () => {
+    if (
+      window.confirm(t("confirmLogout", "Are you sure you want to logout?"))
+    ) {
+      // if save in sessionStorage remove
+      sessionStorage.removeItem("access");
+      sessionStorage.removeItem("refresh");
+      sessionStorage.removeItem("username");
+      sessionStorage.removeItem("username");
+      // if save in localStorage remove
+
+      localStorage.removeItem("access");
+      localStorage.removeItem("refresh");
+      localStorage.removeItem("username");
+      localStorage.removeItem("username");
+
+      setAvatar(null);
+      console.log("Access:", sessionStorage.getItem("access"));
+      console.log("Refresh:", sessionStorage.getItem("refresh"));
+      console.log("Username:", localStorage.getItem("username"));
+      //back to login
+      navigate({ to: "/" });
+    }
+  };
+  const { t } = useTranslation();
   const URL = "http://127.0.0.1:9000/api/products/"; // API
   const fetchProducts = async () => {
     const res = await fetch(URL);
@@ -27,7 +74,7 @@ const HomePage = () => {
   const handleSortChange = (e) => {
     setSortOption(e.target.value);
   };
-
+  const { convert } = useCurrency();
   const displayProducts = products
     .filter((product) =>
       product.name.toLowerCase().includes(searchValue.toLowerCase()),
@@ -53,17 +100,35 @@ const HomePage = () => {
   return (
     <>
       <div className="header">
-        <h1>Happy Hour Heaven 🥂</h1>
+        <LogoutButton onLogout={handleLogout} />
+        <h1>{t("happyHourHeaven", "Happy Hour Heaven 🥂")}</h1>
+        
         <h3>
-          If drunk driving is illegal, then why are there parking lots near a
-          pub?
+          {t(
+            "ifDrunkDrivingIsIllegalThenWhyAreThereParkingLotsNearAPub",
+            "If drunk driving is illegal, then why are there parking lots near a\r\n          pub?",
+          )}
         </h3>
+        
         <div className="nav-wrapper">
           <div className="account-wrapper">
             {" "}
             <Link to="/my_account_page" className="account">
-              <FaUserCircle size={35} color="black" />
-              My Account
+              {avatar ? (
+                <img
+                  src={avatar}
+                  alt="avatar"
+                  style={{
+                    width: 35,
+                    height: 35,
+                    borderRadius: "50%",
+                    objectFit: "cover",
+                  }}
+                />
+              ) : (
+                <FaUserCircle size={35} color="black" />
+              )}
+              {t("myAccount", "My Account")}
             </Link>
           </div>
           <div className="shopping-cart-container">
@@ -71,7 +136,7 @@ const HomePage = () => {
               {" "}
               <button className="shopping-cart-button">
                 <FaShoppingCart size={35} color="blue" />
-                View Cart
+                {t("viewCart", "View Cart")}
               </button>
             </Link>
             <div className="items-quantities">{totalItems}</div>
@@ -80,63 +145,67 @@ const HomePage = () => {
           <div className="favorite-items-wrapper">
             <Link to="/favorite_page" className="favorite-items">
               <FaHeart size={30} color="red" />
-              Favorite list
+              {t("favoriteList", "Favorite list")}
             </Link>
             <div className="favorite-quantities">{totalFavorites}</div>
           </div>
           <div className="contact-wrapper">
             <Link to="/contact_page" className="contact">
               <LuContact size={30} color="grey" />
-              Contact
+              {t("contact", "Contact")}
             </Link>
           </div>
         </div>
       </div>
+      <ThemeToggle isDark={isDark} onToggle={toggleTheme} />
       <div className="body">
+        <LanguageSwitcher />
         <div className="products-container">
           <div className="utilities">
             <div className="filter-options">
-              <label htmlFor="options">Filter </label>
+              <label htmlFor="options">{t("filter", "Filter")} </label>
               <select
                 name="options"
                 onChange={handleSortChange}
                 value={sortOption}
               >
-                <option value="Default">Default</option>
+                <option value="Default">{t("default", "Default")}</option>
                 <option value="Price from high to low">
-                  Price High to Low
+                  {t("priceHighToLow", "Price High to Low")}
                 </option>
                 <option value="Price from low to high">
-                  Price Low to High
+                  {t("priceLowToHigh", "Price Low to High")}
                 </option>
               </select>
             </div>
 
             <div className="search-bar">
               <label htmlFor="search-input">
-                Search
-                <input
-                  type="text"
-                  name="search-input"
-                  value={searchValue}
-                  onChange={(e) => setSearchValue(e.target.value)}
-                />
+                <Trans i18nKey="searchInputTypetextNamesearchinputValuesearchvalueOnchangeeSetsearchvalueetargetvalue">
+                  Search
+                  <input
+                    type="text"
+                    name="search-input"
+                    value={searchValue}
+                    onChange={(e) => setSearchValue(e.target.value)}
+                  />
+                </Trans>
               </label>
             </div>
 
             <div className="category-option">
-              <label htmlFor="category">Category </label>
+              <label htmlFor="category">{t("category", "Category")} </label>
               <select
                 name="category"
                 onChange={(e) => setCategoryOption(e.target.value)}
                 value={categoryOption}
               >
-                <option value="All">All</option>
-                <option value="gin">Gin</option>
-                <option value="vodka">Vodka</option>
-                <option value="rum">Rum</option>
-                <option value="whiskey">Whiskey</option>
-                <option value="redwine">RedWine</option>
+                <option value="All">{t("all", "All")}</option>
+                <option value="gin">{t("gin", "Gin")}</option>
+                <option value="vodka">{t("vodka", "Vodka")}</option>
+                <option value="rum">{t("rum", "Rum")}</option>
+                <option value="whiskey">{t("whiskey", "Whiskey")}</option>
+                <option value="redwine">{t("redwine", "RedWine")}</option>
               </select>
             </div>
           </div>
@@ -156,32 +225,40 @@ const HomePage = () => {
                 <div className="product-image-wrapper">
                   <img
                     className="image-url"
-                    src={product.place_holder_image}
-                    alt={product.product_name}
+                    src={product.image}
+                    alt={product.name}
                     style={{ width: 200, height: 200, objectFit: "cover" }}
                   />
-                  <p className="product-price">{product.price} $NZ</p>
+                  <p className="product-price">
+                    {t("price", { amount: convert(product.price) })}
+                  </p>
                 </div>
                 <div className="product-info">
                   <p className="product-name">{product.name}</p>
                   <p className="product-description">
-                    {product.description.slice(0, 30)}...
+                    {product.description.slice(0, 30)}
+                    {t("key", "...")}
                   </p>
                   <p className="product-category">{product.category_name}</p>
                   <p className="listing-date">{product.date.slice(0, 10)}</p>
                   <p className="seller">{product.seller_name}</p>
                   <div className="product-actions">
                     <button onClick={() => handleAddToCart(product)}>
-                      Add to cart <FaShoppingCart size={16} color="blue" />
+                      {t("addToCart", "Add to cart")}{" "}
+                      <FaShoppingCart size={16} color="blue" />
                     </button>
                     <button onClick={() => handleAddToFavorite(product)}>
-                      Add to favorite <FaHeart size={16} color="red" />
+                      {t("addToFavorite", "Add to favorite")}{" "}
+                      <FaHeart size={16} color="red" />
                     </button>
                   </div>
                 </div>
               </li>
             ))}
           </ul>
+        </div>
+        <div className="chatbot">
+          <Chatbot />
         </div>
       </div>
     </>

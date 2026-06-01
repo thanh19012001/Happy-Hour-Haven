@@ -1,4 +1,3 @@
-import "../css/LoginForm.css";
 import useLoginForm from "./useLoginForm";
 
 function LoginForm() {
@@ -7,11 +6,14 @@ function LoginForm() {
     setUsername,
     password,
     setPassword,
+    mfaRequired,
+    mfaCode,
+    setMfaCode,
     errorMessage,
-    isError,
     isLoading,
     handleSubmit,
   } = useLoginForm();
+
   return (
     <div>
       <div className="header">
@@ -40,7 +42,6 @@ function LoginForm() {
                 value={username}
               />
             </label>
-
             <label htmlFor="password">
               <span>Password</span>
               <input
@@ -55,15 +56,32 @@ function LoginForm() {
                 value={password}
               />
             </label>
+
+            {/* MFA code input — only shows if MFA is required */}
+            {mfaRequired && (
+              <label htmlFor="mfaCode">
+                <span>MFA Code</span>
+                <input
+                  id="mfaCode"
+                  type="text"
+                  name="mfaCode"
+                  minLength="6"
+                  maxLength="6"
+                  placeholder="Enter 6-digit code"
+                  onChange={(e) => setMfaCode(e.target.value)}
+                  value={mfaCode}
+                />
+              </label>
+            )}
+
             <button disabled={isLoading} type="submit">
-              {isLoading ? "Logging in ..." : "Log in"}
+              {isLoading ? "Logging in..." : mfaRequired ? "Verify Code" : "Log in"}
             </button>
             <p>
               Not registered yet? <a href="/register">Register here</a>
             </p>
-
-            {errorMessage ?? (
-              <p className={isError ? "error" : "success"}>{errorMessage}</p>
+            {errorMessage && (
+              <p className="error">{errorMessage}</p>
             )}
           </form>
         </div>

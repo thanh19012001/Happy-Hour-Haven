@@ -2,13 +2,19 @@ import { FaMinus, FaPlus } from "react-icons/fa";
 import { useCart } from "./CartContext";
 import { useFavorite } from "./FavoriteContext";
 import { useContact } from "./ContactContext";
+import { useTranslation } from "react-i18next";
+import { useCurrency } from "./CurrencyContext";
+import i18next from "i18next";
 
 function PaymentPage() {
+  const { t, i18n } = useTranslation();
   const { cartItems, handleAddToCart, handleRemoveFromCart } = useCart();
-  const { favoriteItems } = useFavorite;
+  const { favoriteItems } = useFavorite();
   const { contacts } = useContact();
-
+  const { convert, currentCurrency } = useCurrency(); // we can take the code&symbol
   const handleCheckout = async () => {
+    console.log("i18n.language:", i18n.language); // ← thêm
+    console.log("currentCurrency:", currentCurrency);
     try {
       // because stripe work based on session so we need to store session state before we pay by stripe
       sessionStorage.setItem(
@@ -24,9 +30,12 @@ function PaymentPage() {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ cartItems }),
+        body: JSON.stringify({
+          cartItems,
+          language: i18n.language,
+          currency: currentCurrency.code,
+        }),
       });
-
       //check fetch error
       if (!response.ok) {
         const errorData = await response.json();
@@ -54,10 +63,15 @@ function PaymentPage() {
 
   return (
     <div className="payment-container">
-      <h1>Checkout Page</h1>
+      <h1>{t("checkoutPage", "Checkout Page")}</h1>
 
       {cartItems.length === 0 ? (
-        <p>Your cart is empty. Please add some items first.</p>
+        <p>
+          {t(
+            "yourCartIsEmptyPleaseAddSomeItemsFirst",
+            "Your cart is empty. Please add some items first.",
+          )}
+        </p>
       ) : (
         <>
           <div className="cart-items">
@@ -65,15 +79,19 @@ function PaymentPage() {
               <div key={item.id} className="cart-item">
                 <br />
                 <img
-                  src={item.place_holder_image}
+                  src={item.image}
                   alt={item.product_name}
                   style={{ width: 300, height: 300 }}
                 />
                 <div className="item-info">
                   <br />
                   <h2>{item.product_name}</h2>
-                  <p>Price: ${item.price} NZD</p>
-                  <p>Seller: {item.seller_name}</p>
+                  <p>{convert(item.price)}</p>
+                  <p>
+                    {t("sellerSeller_name", "Seller: {{seller_name}}", {
+                      seller_name: item.seller_name,
+                    })}
+                  </p>
 
                   <div className="quantity-controls">
                     <button
@@ -82,7 +100,11 @@ function PaymentPage() {
                     >
                       <FaMinus size={14} />
                     </button>
-                    <span className="quantity">Qty: {item.quantity}</span>
+                    <span className="quantity">
+                      {t("qtyQuantity", "Qty: {{quantity}}", {
+                        quantity: item.quantity,
+                      })}
+                    </span>
                     <button
                       onClick={() => handleAddToCart(item)}
                       className="quantity-btn"
@@ -92,7 +114,8 @@ function PaymentPage() {
                   </div>
 
                   <p className="subtotal">
-                    Subtotal: ${(item.price * item.quantity).toFixed(2)} NZD
+                    {t("total", "Total: ")}
+                    {convert((item.price * item.quantity).toFixed(2))}
                   </p>
                 </div>
               </div>
@@ -100,13 +123,14 @@ function PaymentPage() {
           </div>
 
           <div className="checkout-summary">
-            <h2>Total Amount: ${totalAmount.toFixed(2)} NZD</h2>
+            <h2>{t("totalAmount", "Total Amount: $")}</h2>
+            <span>{convert(totalAmount)}</span>
             <button
               onClick={handleCheckout}
               className="checkout-btn"
               disabled={cartItems.length === 0}
             >
-              Proceed to Payment
+              {t("proceedToPayment", "Proceed to Payment")}
             </button>
           </div>
         </>

@@ -7,10 +7,11 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
+const FRONTEND_ORIGIN = process.env.FRONTEND_ORIGIN || "http://localhost:5173";
+
 app.post("/checkout-session", async (req, res) => {
   try {
-    const { cartItems } = req.body;
-
+    const { cartItems, language = "en", currency = "NZD" } = req.body; // update language
     if (!cartItems || cartItems.length === 0) {
       return res.status(400).json({ error: "Cart is empty" });
     }
@@ -23,7 +24,7 @@ app.post("/checkout-session", async (req, res) => {
           description: item.description || "No description available",
           images: item.place_holder_image ? [item.place_holder_image] : [],
         },
-        unit_amount: Math.round(item.price * 100), // Chuyển sang cents
+        unit_amount: Math.round(item.price * 100), //  cents
       },
       quantity: item.quantity,
     }));
@@ -32,11 +33,11 @@ app.post("/checkout-session", async (req, res) => {
       payment_method_types: ["card"],
       line_items,
       mode: "payment",
-      success_url: "http://localhost:5173/success_page",
-      cancel_url: "http://localhost:5173/cancel_page",
+      locale: language,
+      success_url: `${FRONTEND_ORIGIN}/success_page?session_id={CHECKOUT_SESSION_ID}&lang=${language}&currency=${currency}`,
+      cancel_url: `${FRONTEND_ORIGIN}/cancel_page?lang=${language}&currency=${currency}`,
     });
 
-    // Trả về cả id và url
     res.json({
       id: session.id,
       url: session.url,

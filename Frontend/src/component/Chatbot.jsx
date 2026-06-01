@@ -30,7 +30,7 @@ const Chatbot = () => {
   };
 
   const generateBotResponse = async (history) => {
-    // Định dạng lại lịch sử trò chuyện đúng cấu trúc mảng API
+   
     const formattedHistory = history.map(({ role, text }) => ({
       role,
       parts: [{ text }],

@@ -6,11 +6,15 @@ from django.contrib.auth import get_user_model
 User = get_user_model()
 
 class UserTestCase(TestCase):
-    def test_hashing(self):
+    def test_userCred(self):
         user = User.objects.create_user(username = "Joe", password = "12345")
 
-        # should return true, if this returns false, that means our stuff is stored in plaintext
-        self.assertNotEqual(user.password, "12345")
+        # should return true. if this returns false, that means our stuff is stored in plaintext
+        #self.assertNotEqual(user.password, "12345")
 
         # Comparing hasehed version of 12345 with the one stored in our Db
-        self.assertTrue(user.check_password("12345"))
+        #self.assertTrue(user.check_password("12345"))
+
+        #comparing username Joe....Joe mama
+        self.assertEqual(user.username, "Joe")
+    

@@ -1,7 +1,10 @@
 import useRegisterForm from "./useRegisterForm";
-import "../css/HomePage.css";
+import { useTranslation } from 'react-i18next';
+import { Link } from "@tanstack/react-router"; // Thêm import Link
+import LanguageSwitcher from './LanguageSwitcher'; // Đảm bảo đường dẫn đúng
 
 function RegisterForm() {
+  const { t } = useTranslation();
   const {
     username,
     setUsername,
@@ -9,63 +12,71 @@ function RegisterForm() {
     setPassword,
     handleRegister,
     isLoading,
-    isError,
-    error,
+    errorMessage, // Đổi từ error thành errorMessage
     isRegister,
   } = useRegisterForm();
+
   return (
     <div>
       <div className="header">
-        <h1>Happy Hour Heaven 🥂</h1>
+        <h1>{t('happyHourHeaven', 'Happy Hour Heaven 🥂')}</h1>
         <h3>
-          If drunk driving is illegal, then why are there parking lots near a
-          pub?
+          {t('ifDrunkDrivingIsIllegalThenWhyAreThereParkingLotsNearAPub', 
+             'If drunk driving is illegal, then why are there parking lots near a pub?')}
         </h3>
+        <LanguageSwitcher /> {/* Đây là chỗ dùng LanguageSwitcher */}
       </div>
-      <div className="register-wrapper">
-        <div className="register-form">
-          <h2 className="register-text">REGISTER</h2>
+      <div className="login-wrapper">
+        <div className="login-form">
+          <h2 className="register-text">{t('register', 'REGISTER')}</h2>
           <form onSubmit={handleRegister}>
             <label htmlFor="username">
-              <span>Username</span>
+              <span>{t('username', 'Username')}</span>
               <input
                 className="username-register-form"
                 id="username"
                 type="text"
                 name="username"
                 required
-                minLength="1"
+                minLength="2" // Nên để 2 thay vì 1
                 maxLength="10"
-                placeholder="Enter Username Here"
+                placeholder={t('enterUsernameHere', 'Enter Username Here')}
                 onChange={(e) => setUsername(e.target.value)}
                 value={username}
               />
             </label>
 
             <label htmlFor="password">
-              <span>Password</span>
+              <span>{t('password', 'Password')}</span>
               <input
                 className="password-register-form"
                 id="password"
                 type="password"
                 name="password"
                 required
-                minLength="1"
-                placeholder="Enter Password Here"
+                minLength="2" 
+                placeholder={t('enterPasswordHere', 'Enter Password Here')}
                 onChange={(e) => setPassword(e.target.value)}
                 value={password}
               />
             </label>
+            
             <button disabled={isLoading} type="submit">
-              {isLoading ? "Loading..." : "Register"}
+              {isLoading ? t('loading', 'Loading...') : t('register', 'Register')}
             </button>
 
-            {<p className={isError ? "error" : "success"}>{error?.Message}</p>}
+            {/* Sửa cách hiển thị error */}
+            {errorMessage && (
+              <p className="error">{errorMessage}</p>
+            )}
 
             {isRegister && (
-              <Link to="/">
-                <p>Back to Login</p>
-              </Link>
+              <div className="success">
+                <p>{t('registrationSuccessful', 'Registration successful!')}</p>
+                <Link to="/">
+                  <p>{t('backToLogin', 'Back to Login')}</p>
+                </Link>
+              </div>
             )}
           </form>
         </div>

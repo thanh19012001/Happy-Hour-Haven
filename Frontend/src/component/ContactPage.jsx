@@ -1,7 +1,9 @@
 import { useQuery } from "@tanstack/react-query";
 import { useContact } from "./ContactContext";
+import { useTranslation } from "react-i18next"; // 
 
 const ContactPage = () => {
+  const { t } = useTranslation(); 
   const { contacts } = useContact();
 
   const { data: products = [] } = useQuery({
@@ -16,13 +18,17 @@ const ContactPage = () => {
   return (
     <>
       <div className="header">
-        <h1>Happy Hour Heaven 🥂</h1>
+        <h1>{t("happyHourHeaven", "Happy Hour Heaven 🥂")}</h1>
         <h3>
-          If drunk driving is illegal, then why are there parking lots near a
-          pub?
+          {t(
+            "ifDrunkDrivingIsIllegalThenWhyAreThereParkingLotsNearAPub",
+            "If drunk driving is illegal, then why are there parking lots near a pub?",
+          )}
         </h3>
       </div>
-      <h2>Contact list</h2>
+      
+      <h2>{t("contactList", "Contact list")}</h2>
+      
       <div className="contact-wrapper">
         {contacts.map((contact) => (
           <div className="contact-body" key={contact.id}>
@@ -30,7 +36,7 @@ const ContactPage = () => {
             <p className="contact-name">{contact.username}</p>
             <p className="contact-contact">{contact.contact}</p>
             <div className="contact-activities">
-              <h2>Product List:</h2>
+              <h2>{t("productList", "Product List:")}</h2>
               <ul>
                 {products
                   .filter((p) => p.sellerId === contact.id)
