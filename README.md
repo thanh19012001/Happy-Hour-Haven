@@ -51,6 +51,7 @@ Happy-Hour-Haven
 
 ```bash
 cd Frontend
+npm install react-i18next i18next i18next-browser-languagedetector i18next-resources-to-backend qrcode.react lucide-react react-avatar-editor
 npm run dev
 ```
 
