@@ -59,6 +59,8 @@ npm run dev
 
 ```bash
 cd Backend
+python -m venv venv
+venv\Scripts\activate
 pip install -r requirements.txt
 daphne -p 9000 HappyHH.asgi:application
 ```
