@@ -73,20 +73,17 @@ npm run dev
 Create a `.env` file in the each directory if needed.
 
 Example:
-
+### Frontend
 ```env FROM FRONTEND
 VITE_API_URL=YOUR_API_KEY
 LOCIZE_API_KEY =YOUR_API_KEY
 ```
 
+### Stripe server
 ```env FROM STRIPE SERVER
 STRIPE_SECRET_KEY = YOUR_API_KEY
 REACT_APP_STRIPE_PUBLISHABLE_KEY = YOUR_API_KEY
 ```
 
-```env FROM BACKEND
-STRIPE_SECRET_KEY = YOUR_API_KEY
-REACT_APP_STRIPE_PUBLISHABLE_KEY = YOUR_API_KEY
-```
 
 
