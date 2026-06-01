@@ -4,7 +4,7 @@ Happy Hour Heaven is a full-stack e-commerce web application for browsing and pu
 
 ## Features
 
-* User authentication
+* MFA
 * Product listing
 * Product details page
 * Search products
@@ -15,8 +15,9 @@ Happy Hour Heaven is a full-stack e-commerce web application for browsing and pu
 * Multi-language support
 * Currency conversion
 * Dark / Light theme
-* User profile avatar
+* User profile
 * Chatbot integration
+* Real Time Chat with other user
 
 ## Tech Stack
 
