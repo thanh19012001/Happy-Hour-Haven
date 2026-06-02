@@ -1,5 +1,5 @@
 
-import "../css/ThemeToggle.css";
+import "../css/themeToggle.css";
 export default function ThemeToggle({ isDark, onToggle }) {
   return (
     <button
