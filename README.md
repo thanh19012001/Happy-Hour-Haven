@@ -18,6 +18,8 @@ Happy Hour Heaven is a full-stack e-commerce web application for browsing and pu
 * User profile
 * Chatbot integration
 * Real Time Chat with other user
+* Responsive layout
+
 
 ## Tech Stack
 
