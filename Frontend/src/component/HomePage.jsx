@@ -12,72 +12,71 @@ import Chatbot from "./Chatbot";
 import LogoutButton from "./LogoutButton";
 import { useAvatar } from "./AvatarContext";
 import ThemeToggle from "./ThemeToggle";
+
 const HomePage = () => {
   const { avatar, setAvatar } = useAvatar();
-  //add logic theme and state
-  const [isDark, setIsDark] = useState(true);
+  const navigate = useNavigate();
+  const { t } = useTranslation();
+
+  // ================= THEME FIX =================
+  const [isDark, setIsDark] = useState(() => {
+    return localStorage.getItem("theme") === "dark";
+  });
+
   useEffect(() => {
-    const mq = window.matchMedia("(prefers-color-scheme: dark)");
-    setIsDark(mq.matches);
-    document.body.className = mq.matches ? "dark" : "light";
-  }, []);
+    document.body.className = isDark ? "dark" : "light";
+    localStorage.setItem("theme", isDark ? "dark" : "light");
+  }, [isDark]);
 
   function toggleTheme() {
-    setIsDark((prev) => {
-      const next = !prev;
-      document.body.className = next ? "dark" : "light";
-      return next;
-    });
+    setIsDark((prev) => !prev);
   }
+  // ============================================
+
   const handleLogout = () => {
     if (
       window.confirm(t("confirmLogout", "Are you sure you want to logout?"))
     ) {
-      // if save in sessionStorage remove
       sessionStorage.removeItem("access");
       sessionStorage.removeItem("refresh");
       sessionStorage.removeItem("username");
-      sessionStorage.removeItem("username");
-      // if save in localStorage remove
 
       localStorage.removeItem("access");
       localStorage.removeItem("refresh");
       localStorage.removeItem("username");
-      localStorage.removeItem("username");
 
       setAvatar(null);
-      console.log("Access:", sessionStorage.getItem("access"));
-      console.log("Refresh:", sessionStorage.getItem("refresh"));
-      console.log("Username:", localStorage.getItem("username"));
-      //back to login
+
       navigate({ to: "/" });
     }
   };
-  const { t } = useTranslation();
-  const URL = "http://127.0.0.1:9000/api/products/"; // API
+
+  const URL = "http://127.0.0.1:9000/api/products/";
+
   const fetchProducts = async () => {
     const res = await fetch(URL);
     if (!res.ok) throw new Error("fail to fetch product");
     return res.json();
   };
+
   const [sortOption, setSortOption] = useState("Default");
   const [searchValue, setSearchValue] = useState("");
   const [categoryOption, setCategoryOption] = useState("All");
+
   const { handleAddToCart, totalItems } = useCart();
   const { handleAddToFavorite, totalFavorites } = useFavorite();
-  const navigate = useNavigate();
+
   const { data: products = [] } = useQuery({
     queryKey: ["products"],
     queryFn: fetchProducts,
     staleTime: 5 * 60 * 1000,
   });
-  const handleSortChange = (e) => {
-    setSortOption(e.target.value);
-  };
+
   const { convert } = useCurrency();
+
   const displayProducts = products
     .filter((product) =>
-      product.name.toLowerCase().includes(searchValue.toLowerCase()),
+      product.name.toLowerCase().includes(searchValue.toLowerCase())
     )
     .filter((product) => {
       if (categoryOption === "All") return true;
@@ -86,14 +85,8 @@ const HomePage = () => {
       );
     })
     .sort((a, b) => {
-      if (sortOption === "Price from high to low") {
-        return b.price - a.price;
-      }
-
-      if (sortOption === "Price from low to high") {
-        return a.price - b.price;
-      }
-
+      if (sortOption === "Price from high to low") return b.price - a.price;
+      if (sortOption === "Price from low to high") return a.price - b.price;
       return 0;
     });
 
@@ -101,18 +94,18 @@ const HomePage = () => {
     <>
       <div className="header">
         <LogoutButton onLogout={handleLogout} />
+
         <h1>{t("happyHourHeaven", "Happy Hour Heaven 🥂")}</h1>
-        
+
         <h3>
           {t(
             "ifDrunkDrivingIsIllegalThenWhyAreThereParkingLotsNearAPub",
-            "If drunk driving is illegal, then why are there parking lots near a\r\n          pub?",
+            "If drunk driving is illegal, then why are there parking lots near a pub?"
           )}
         </h3>
-        
+
         <div className="nav-wrapper">
           <div className="account-wrapper">
-            {" "}
             <Link to="/my_account_page" className="account">
               {avatar ? (
                 <img
@@ -131,9 +124,9 @@ const HomePage = () => {
               {t("myAccount", "My Account")}
             </Link>
           </div>
+
           <div className="shopping-cart-container">
             <Link to="/cart_page" className="shopping-cart">
-              {" "}
               <button className="shopping-cart-button">
                 <FaShoppingCart size={35} color="blue" />
                 {t("viewCart", "View Cart")}
@@ -149,6 +142,7 @@ const HomePage = () => {
             </Link>
             <div className="favorite-quantities">{totalFavorites}</div>
           </div>
+
           <div className="contact-wrapper">
             <Link to="/contact_page" className="contact">
               <LuContact size={30} color="grey" />
@@ -157,16 +151,19 @@ const HomePage = () => {
           </div>
         </div>
       </div>
+
+      {/* theme toggle */}
       <ThemeToggle isDark={isDark} onToggle={toggleTheme} />
+
       <div className="body">
         <LanguageSwitcher />
+
         <div className="products-container">
           <div className="utilities">
             <div className="filter-options">
-              <label htmlFor="options">{t("filter", "Filter")} </label>
+              <label>{t("filter", "Filter")} </label>
               <select
-                name="options"
-                onChange={handleSortChange}
+                onChange={(e) => setSortOption(e.target.value)}
                 value={sortOption}
               >
                 <option value="Default">{t("default", "Default")}</option>
@@ -180,12 +177,11 @@ const HomePage = () => {
             </div>
 
             <div className="search-bar">
-              <label htmlFor="search-input">
-                <Trans i18nKey="searchInputTypetextNamesearchinputValuesearchvalueOnchangeeSetsearchvalueetargetvalue">
+              <label>
+                <Trans i18nKey="search">
                   Search
                   <input
                     type="text"
-                    name="search-input"
                     value={searchValue}
                     onChange={(e) => setSearchValue(e.target.value)}
                   />
@@ -194,11 +190,10 @@ const HomePage = () => {
             </div>
 
             <div className="category-option">
-              <label htmlFor="category">{t("category", "Category")} </label>
+              <label>{t("category", "Category")} </label>
               <select
-                name="category"
-                onChange={(e) => setCategoryOption(e.target.value)}
                 value={categoryOption}
+                onChange={(e) => setCategoryOption(e.target.value)}
               >
                 <option value="All">{t("all", "All")}</option>
                 <option value="gin">{t("gin", "Gin")}</option>
@@ -213,8 +208,8 @@ const HomePage = () => {
           <ul className="products-wrapper">
             {displayProducts.map((product) => (
               <li
-                className="product"
                 key={product.id}
+                className="product"
                 onDoubleClick={() =>
                   navigate({
                     to: "/products/$id",
@@ -224,32 +219,34 @@ const HomePage = () => {
               >
                 <div className="product-image-wrapper">
                   <img
-                    className="image-url"
                     src={product.image}
                     alt={product.name}
-                    style={{ width: 200, height: 200, objectFit: "cover" }}
+                    style={{
+                      width: 200,
+                      height: 200,
+                      objectFit: "cover",
+                    }}
                   />
-                  <p className="product-price">
-                    {t("price", { amount: convert(product.price) })}
-                  </p>
+                  <p>{t("price", { amount: convert(product.price) })}</p>
                 </div>
+
                 <div className="product-info">
-                  <p className="product-name">{product.name}</p>
-                  <p className="product-description">
+                  <p>{product.name}</p>
+                  <p>
                     {product.description.slice(0, 30)}
                     {t("key", "...")}
                   </p>
-                  <p className="product-category">{product.category_name}</p>
-                  <p className="listing-date">{product.date.slice(0, 10)}</p>
-                  <p className="seller">{product.seller_name}</p>
+                  <p>{product.category_name}</p>
+                  <p>{product.date.slice(0, 10)}</p>
+                  <p>{product.seller_name}</p>
+
                   <div className="product-actions">
                     <button onClick={() => handleAddToCart(product)}>
-                      {t("addToCart", "Add to cart")}{" "}
-                      <FaShoppingCart size={16} color="blue" />
+                      {t("addToCart", "Add to cart")} <FaShoppingCart />
                     </button>
+
                     <button onClick={() => handleAddToFavorite(product)}>
-                      {t("addToFavorite", "Add to favorite")}{" "}
-                      <FaHeart size={16} color="red" />
+                      {t("addToFavorite", "Add to favorite")} <FaHeart />
                     </button>
                   </div>
                 </div>
@@ -257,9 +254,8 @@ const HomePage = () => {
             ))}
           </ul>
         </div>
-        <div className="chatbot">
-          <Chatbot />
-        </div>
+
+        <Chatbot />
       </div>
     </>
   );
