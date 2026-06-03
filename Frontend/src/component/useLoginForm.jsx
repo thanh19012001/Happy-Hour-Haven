@@ -9,7 +9,7 @@ export default function useLoginForm() {
   const [mfaRequired, setMfaRequired] = useState(false);
   const [mfaCode, setMfaCode] = useState("");
 
-  const URL = "http://127.0.0.1:9000/login/";
+  const URL = "http://127.0.0.1:8000/login/";
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {

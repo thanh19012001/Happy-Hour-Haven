@@ -7,7 +7,7 @@ import { useFavorite } from "./FavoriteContext";
 
 const ProductPage = () => {
   const { id } = useParams({ from: "/products/$id" });
-  const URL = `http://127.0.0.1:9000/api/products/${id}/`;
+  const URL = `http://127.0.0.1:8000/api/products/${id}/`;
   const [chatRoom, setChatRoom] = useState(null);
   const [chatMessage, setChatMessage] = useState("");
   const [messages, setMessages] = useState([]);
@@ -28,7 +28,7 @@ const ProductPage = () => {
   };
 
   const fetchReviews = async () => {
-    const res = await fetch(`http://127.0.0.1:9000/products/${id}/reviews/`, {
+    const res = await fetch(`http://127.0.0.1:8000/products/${id}/reviews/`, {
       headers: {
         Authorization: `Bearer ${token}`,
       },
@@ -40,7 +40,7 @@ const ProductPage = () => {
   // Fetch pending chat requests for seller
   const fetchChatRequests = async () => {
     if (!token) return [];
-    const res = await fetch("http://127.0.0.1:9000/chat/requests/", {
+    const res = await fetch("http://127.0.0.1:8000/chat/requests/", {
       headers: { Authorization: `Bearer ${token}` },
     });
     if (!res.ok) return [];
@@ -77,7 +77,7 @@ const ProductPage = () => {
 
   // Buyer initiates chat
   const handleChatWithSeller = async () => {
-    const response = await fetch("http://127.0.0.1:9000/chat/initiate/", {
+    const response = await fetch("http://127.0.0.1:8000/chat/initiate/", {
       method: "POST",
       headers: {
         Authorization: `Bearer ${token}`,
@@ -100,7 +100,7 @@ const ProductPage = () => {
 
   // Seller dismisses a chat request
   const handleDismissChat = async (roomId) => {
-    await fetch(`http://127.0.0.1:9000/chat/requests/${roomId}/`, {
+    await fetch(`http://127.0.0.1:8000/chat/requests/${roomId}/`, {
       method: "DELETE",
       headers: { Authorization: `Bearer ${token}` },
     });
@@ -116,7 +116,7 @@ const ProductPage = () => {
   // Connect to WebSocket room
   const connectToRoom = (roomId) => {
     if (socket) socket.close();
-    const ws = new WebSocket(`ws://127.0.0.1:9000/ws/chat/${roomId}/`);
+    const ws = new WebSocket(`ws://127.0.0.1:8000/ws/chat/${roomId}/`);
     ws.onopen = () => console.log("Connected to chat!");
     ws.onmessage = (event) => {
       const msg = JSON.parse(event.data);
@@ -141,7 +141,7 @@ const ProductPage = () => {
     }
 
     const response = await fetch(
-      `http://127.0.0.1:9000/products/${id}/reviews/`,
+      `http://127.0.0.1:8000/products/${id}/reviews/`,
       {
         method: "POST",
         headers: {

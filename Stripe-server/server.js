@@ -9,9 +9,19 @@ app.use(express.json());
 
 const FRONTEND_ORIGIN = process.env.FRONTEND_ORIGIN || "http://localhost:5173";
 
+// Valid Stripe locales
+const VALID_LOCALES = ["auto", "bg", "cs", "da", "de", "el", "en", "en-GB", "es", "es-419", "et", "fi", "fil", "fr", "fr-CA", "hr", "hu", "id", "it", "ja", "ko", "lt", "lv", "ms", "mt", "nb", "nl", "pl", "pt", "pt-BR", "ro", "ru", "sk", "sl", "sv", "th", "tr", "vi", "zh", "zh-HK", "zh-TW"];
+
 app.post("/checkout-session", async (req, res) => {
   try {
-    const { cartItems, language = "en", currency = "NZD" } = req.body; // update language
+    let { cartItems, language = "en", currency = "NZD" } = req.body;
+    
+    // Validate and default language to 'en' if not in valid list
+    if (!VALID_LOCALES.includes(language)) {
+      console.warn(`Invalid locale: ${language}, defaulting to 'en'`);
+      language = "en";
+    }
+    
     if (!cartItems || cartItems.length === 0) {
       return res.status(400).json({ error: "Cart is empty" });
     }

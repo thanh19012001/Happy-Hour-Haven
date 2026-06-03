@@ -6,7 +6,7 @@ import { useState } from "react";
 const SellerPage = () => {
   const { id } = useParams({ from: `/sellers/$id` });
   const [isSaved, setIsSaved] = useState(false);
-  const URL = `http://127.0.0.1:9000/api/sellers/${id}/`;
+  const URL = `http://127.0.0.1:8000/api/sellers/${id}/`;
   const fetchSellers = async () => {
     const res = await fetch(URL);
     if (!res.ok) throw new Error("fail to fetch product");
@@ -16,7 +16,7 @@ const SellerPage = () => {
   const { data: products = [] } = useQuery({
     queryKey: ["products"],
     queryFn: async () => {
-      const res = await fetch("http://127.0.0.1:9000/api/products/");
+      const res = await fetch("http://127.0.0.1:8000/api/products/");
       return res.json();
     },
     staleTime: 5 * 60 * 1000,

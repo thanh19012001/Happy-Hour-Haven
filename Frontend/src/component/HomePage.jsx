@@ -54,7 +54,7 @@ const HomePage = () => {
     }
   };
   const { t } = useTranslation();
-  const URL = "http://127.0.0.1:9000/api/products/"; // API
+  const URL = "http://127.0.0.1:8000/api/products/"; // API
   const fetchProducts = async () => {
     const res = await fetch(URL);
     if (!res.ok) throw new Error("fail to fetch product");

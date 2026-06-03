@@ -18,7 +18,7 @@ const MyAccountPage = () => {
   const { setAvatar } = useAvatar();
  
   const fetchCurrentUser = async () => {
-    const res = await fetch("http://localhost:9000/user/me/", {
+    const res = await fetch("http://localhost:8000/user/me/", {
       headers: { Authorization: `Bearer ${token}` },
     });
     if (!res.ok) throw new Error("Failed to fetch user data");
@@ -36,7 +36,7 @@ const MyAccountPage = () => {
       const blob = await fetch(avatarDataUrl).then((r) => r.blob());
       const formData = new FormData();
       formData.append("avatar", blob, "avatar.png");
-      const res = await fetch("http://127.0.0.1:9000/user/me/", {
+      const res = await fetch("http://127.0.0.1:8000/user/me/", {
         method: "PUT",
         headers: { Authorization: `Bearer ${token}` },
         body: formData,
@@ -53,7 +53,7 @@ const MyAccountPage = () => {
   };
  
   const handleStartMfaSetup = async () => {
-    const res = await fetch("http://localhost:9000/mfa/setup/", {
+    const res = await fetch("http://localhost:8000/mfa/setup/", {
       headers: { Authorization: `Bearer ${token}` },
     });
     const data = await res.json();
@@ -62,7 +62,7 @@ const MyAccountPage = () => {
   };
  
   const handleEnableMfa = async () => {
-    const res = await fetch("http://localhost:9000/mfa/enable/", {
+    const res = await fetch("http://localhost:8000/mfa/enable/", {
       method: "POST",
       headers: {
         Authorization: `Bearer ${token}`,
@@ -83,7 +83,7 @@ const MyAccountPage = () => {
   const handleDeleteAccount = async () => {
     if (!window.confirm(t("confirmDeleteAccount", "Are you sure? This cannot be undone!"))) return;
     try {
-      const res = await fetch("http://127.0.0.1:9000/delete-account/", {
+      const res = await fetch("http://127.0.0.1:8000/delete-account/", {
         method: "DELETE",
         headers: { Authorization: `Bearer ${token}` },
       });

@@ -17,7 +17,7 @@ const Success = () => {
   }, [searchParams, i18n]);
   const generateInvoice = useCallback(() => {
     if (cartItems.length === 0) return;
-    const invoiceNumber = String(Math.floor(Math.random() * 900000) + 100000);
+    const invoiceNumber = String(Math.floor(Math.random() * 800000) + 100000);
     const doc = new jsPDF();
     doc.setFontSize(20);
     doc.text("HAPPY HOUR HEAVEN - INVOICE", 105, 20, { align: "center" });
@@ -52,7 +52,7 @@ const Success = () => {
     if (!token || cartItems.length === 0) return;
 
     try {
-      const cartRes = await fetch("http://127.0.0.1:9000/api/cart/", {
+      const cartRes = await fetch("http://127.0.0.1:8000/api/cart/", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -70,7 +70,7 @@ const Success = () => {
 
       for (const item of cartItems) {
         const orderRes = await fetch(
-          "http://127.0.0.1:9000/api/order_product/",
+          "http://127.0.0.1:8000/api/order_product/",
           {
             method: "POST",
             headers: {

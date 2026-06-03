@@ -10,7 +10,7 @@ export const AvatarProvider = ({ children }) => {
 
     if (!token) return;
 
-    fetch("http://127.0.0.1:9000/user/me/", {
+    fetch("http://127.0.0.1:8000/user/me/", {
       headers: {
         Authorization: `Bearer ${token}`,
       },

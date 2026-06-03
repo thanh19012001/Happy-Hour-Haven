@@ -9,7 +9,7 @@ const ContactPage = () => {
   const { data: products = [] } = useQuery({
     queryKey: ["products"],
     queryFn: async () => {
-      const res = await fetch("http://127.0.0.1:9000/api/products/");
+      const res = await fetch("http://127.0.0.1:8000/api/products/");
       return res.json();
     },
     staleTime: 5 * 60 * 1000,

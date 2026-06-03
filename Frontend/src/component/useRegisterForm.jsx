@@ -4,7 +4,7 @@ import { useNavigate } from "@tanstack/react-router"; // Thêm navigate
 
 
 export default function useRegisterForm() {
-  const URL = "http://127.0.0.1:9000/register/";
+  const URL = "http://127.0.0.1:8000/register/";
   const navigate = useNavigate(); // Dùng navigate thay vì window.location
   const queryClient = useQueryClient();
 

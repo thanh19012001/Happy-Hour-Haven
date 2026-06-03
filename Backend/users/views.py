@@ -12,8 +12,26 @@ from rest_framework_simplejwt.views import TokenObtainPairView
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 
 import pyotp
+from .models import LoginLog
 
 User = get_user_model()
+
+
+def get_client_ip(request):
+    """Get client IP address from request"""
+    x_forwarded_for = request.META.get('HTTP_X_FORWARDED_FOR')
+    if x_forwarded_for:
+        ip = x_forwarded_for.split(',')[0]
+    else:
+        ip = request.META.get('REMOTE_ADDR')
+    return ip
+
+
+def log_login(user, request):
+    """Log user login with IP and user agent"""
+    ip = get_client_ip(request)
+    user_agent = request.META.get('HTTP_USER_AGENT', '')
+    LoginLog.objects.create(user=user, ip_address=ip, user_agent=user_agent)
 
 
 class RegisterView(generics.CreateAPIView):
@@ -150,5 +168,8 @@ class MFAEnforcedLoginView(APIView):
             if not totp.verify(code):
                 return Response({"error": "Invalid MFA code"}, status=status.HTTP_401_UNAUTHORIZED)
 
-        # Step 3: return token
+        # Step 3: Log the login
+        log_login(user, request)
+        
+        # Step 4: return token
         return Response(token_serializer.validated_data)
